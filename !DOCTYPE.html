@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Real-time Loy Krathong 🪷</title>
+    <!-- นำเข้า Firebase SDK สำหรับทำงานบนหน้าเว็บเบราว์เซอร์ -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --river-bg: linear-gradient(to bottom, #0a1128, #101f42, #1c3366);
+        }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Sarabun', sans-serif; overflow: hidden;
+            background: var(--river-bg); color: #fff;
+        }
+        .river-container {
+            position: relative; width: 100%; height: 65vh;
+            background: linear-gradient(transparent 70%, rgba(255,255,255,0.05));
+            box-shadow: inset 0 -20px 50px rgba(0,0,0,0.5);
+        }
+        .moon {
+            position: absolute; top: 40px; right: 10%;
+            width: 80px; height: 80px; background: #fffdf0;
+            border-radius: 50%; box-shadow: 0 0 40px #fffdf0, 0 0 80px #fffa85;
+        }
+        .krathong-item {
+            position: absolute; display: flex; flex-direction: column;
+            align-items: center; cursor: pointer; animation: floatRiver linear forwards;
+            will-change: transform;
+        }
+        .krathong-emoji {
+            font-size: 3.5rem; filter: drop-shadow(0 0 10px rgba(255,230,100,0.8));
+            animation: bobbing 3s ease-in-out infinite;
+        }
+        .krathong-name {
+            background: rgba(0, 0, 0, 0.75); padding: 4px 10px;
+            border-radius: 12px; font-size: 0.85rem; margin-top: 5px;
+            white-space: nowrap; border: 1px solid rgba(255,215,0,0.3);
+        }
+        .control-panel {
+            height: 35vh; background: #0d1b2a;
+            border-top: 3px solid #e0a96d; padding: 20px;
+            box-sizing: border-box; display: flex; gap: 20px;
+            justify-content: center; align-items: center;
+        }
+        .form-box {
+            background: rgba(255,255,255,0.05); padding: 20px;
+            border-radius: 15px; display: flex; flex-direction: column;
+            gap: 12px; width: 400px;
+        }
+        input, select, button { padding: 10px; border-radius: 8px; border: none; font-size: 1rem; }
+        input, select { background: rgba(255,255,255,0.9); color: #333; }
+        button { background: #e0a96d; color: #0d1b2a; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #fff; transform: scale(1.02); }
+        .history-box {
+            width: 300px; height: 80%; background: rgba(0,0,0,0.4);
+            border-radius: 10px; padding: 15px; overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .history-item {
+            font-size: 0.9rem; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between;
+        }
+        @keyframes floatRiver {
+            0% { transform: translate(105vw, var(--start-y)); }
+            100% { transform: translate(-20vw, var(--end-y)); }
+        }
+        @keyframes bobbing {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="river-container" id="river">
+        <div class="moon"></div>
+    </div>
+
+    <div class="control-panel">
+        <div class="form-box">
+            <h3 style="margin: 0; color: #e0a96d; text-align: center;">🪷 ร่วมลอยกระทง Real-time 🪷</h3>
+            <input type="text" id="empName" placeholder="ชื่อ-นามสกุล / แผนก" required>
+            <input type="text" id="wish" placeholder="คำอธิษฐานสุดปัง..." required>
+            <select id="krathongType">
+                <option value="🪷">🪷 กระทงดอกบัวคลาสสิก</option>
+                <option value="🍞">🍞 กระทงขนมปังรักษ์โลก</option>
+                <option value="💻">💻 กระทงสายไอที (แก้บั๊ก)</option>
+                <option value="🍕">🍕 กระทงกองทัพต้องเดินด้วยท้อง</option>
+            </select>
+            <button onclick="loyKrathong()">ปล่อยกระทงลงน้ำ ✨</button>
+        </div>
+
+        <div class="history-box">
+            <h4 style="margin: 0 0 10px 0; color: #e0a96d;">📊 รายชื่อผู้ร่วมกิจกรรม (<span id="count">0</span>)</h4>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        // ใส่ชุดข้อมูล Config ของผู้ใช้ที่ได้จากหน้าจอ Firebase เรียบร้อยแล้ว
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
+            authDomain: "loikatong.firebaseapp.com",
+            projectId: "loikatong",
+            storageBucket: "loikatong.firebasestorage.app",
+            messagingSenderId: "444623044937",
+            appId: "1:444623044937:web:270338a9de2bb36c1fda98",
+            measurementId: "G-CGR2MG02E8"
+        };
+
+        // เริ่มต้นเชื่อมต่อ Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let liveParticipants = [];
+
+        // เชื่อมต่อฐานข้อมูลดักฟังแบบ Real-time (ใครส่งอะไรมา โผล่บนหน้าจอพร้อมกันทันที)
+        db.collection("krathongs").orderBy("timestamp", "asc")
+            .onSnapshot((snapshot) => {
+                const list = document.getElementById('historyList');
+                const count = document.getElementById('count');
+                list.innerHTML = '';
+                count.innerText = snapshot.size;
+
+                liveParticipants = [];
+                snapshot.forEach(doc => liveParticipants.push(doc.data()));
+
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        const data = change.doc.data();
+                        // ปล่อยกระทงใบใหม่ลงแม่น้ำ
+                        animateKrathong(data.name, data.type, data.wish);
+                    }
+                });
+
+                // อัปเดตตารางสรุปรายชื่อพนักงานทางขวามือ
+                [...liveParticipants].reverse().forEach(p => {
+                    const item = document.createElement('div');
+                    item.className = 'history-item';
+                    const displayTime = p.time ? p.time : "--:--";
+                    item.innerHTML = `<span>${p.type} <b>${p.name}</b></span> <small style="color:#aaa">${displayTime}</small>`;
+                    list.appendChild(item);
+                });
+            });
+
+        function loyKrathong() {
+            const nameInput = document.getElementById('empName');
+            const wishInput = document.getElementById('wish');
+            const typeInput = document.getElementById('krathongType');
+
+            if (!nameInput.value || !wishInput.value) {
+                alert('กรุณากรอกชื่อและคำอธิษฐานก่อนลอยจ้า!');
+                return;
+            }
+
+            const timeNow = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+
+            // ส่งข้อมูลพนักงานขึ้นฐานข้อมูลคลาวด์
+            db.collection("krathongs").add({
+                name: nameInput.value,
+                wish: wishInput.value,
+                type: typeInput.value,
+                time: timeNow,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                // เคลียร์ค่าในช่องพิมพ์หลังจากลอยสำเร็จ
+                wishInput.value = '';
+                nameInput.value = '';
+            }).catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+        }
+
+        function animateKrathong(name, emoji, wish) {
+            const river = document.getElementById('river');
+            const krathong = document.createElement('div');
+            krathong.className = 'krathong-item';
+            krathong.title = `คำอธิษฐาน: ${wish}`;
+
+            // คำนวณสุ่มตำแหน่งและความเร็วในการไหล
+            const startY = Math.floor(Math.random() * 50) + 15;
+            const endY = startY + (Math.random() * 10 - 5);
+            const duration = Math.floor(Math.random() * 15) + 20; 
+
+            krathong.style.setProperty('--start-y', `${startY}vh`);
+            krathong.style.setProperty('--end-y', `${endY}vh`);
+            krathong.style.animationDuration = `${duration}s`;
+
+            krathong.innerHTML = `
+                <div class="krathong-emoji">${emoji}</div>
+                <div class="krathong-name">${name}</div>
+            `;
+
+            river.appendChild(krathong);
+
+            // เมื่อลอยทะลุขอบซ้ายจอไปแล้ว จะทำการสุ่มลอยวนใหม่เรื่อยๆ
+            krathong.addEventListener('animationend', () => {
+                krathong.remove();
+                animateKrathong(name, emoji, wish);
+            });
+        }
+    </script>
+</body>
+</html>
