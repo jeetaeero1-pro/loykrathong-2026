@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ลอยกระทงงานวัดออนไลน์ 🪷✨</title>
+    <title>CPALL ลอยกระทงออนไลน์ 🪷✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Mitr:wght@300;400;600&display=swap" rel="stylesheet">
@@ -14,14 +14,14 @@
             margin: 0;
             padding: 0;
             font-family: 'Chakra Petch', 'Mitr', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* ลบกรอบดำเวลาจิ้มบนมือถือ */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(to bottom, #060919 0%, #0b132b 40%, #1c2541 70%, #3a506b 100%);
+            background: linear-gradient(to bottom, #050814 0%, #0a1128 40%, #151f38 70%, #283a52 100%);
         }
 
         .festival-container {
@@ -32,10 +32,24 @@
             flex-direction: column;
         }
 
-        /* 🌙 พระจันทร์เต็มดวง (ปรับขนาดอัตโนมัติตามหน้าจอ) */
+        /* 🟢 โลโก้ CPALL มุมบนซ้าย */
+        .cpall-logo {
+            position: absolute;
+            top: 45px;
+            left: 20px;
+            z-index: 10;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .cpall-green { color: #00843D; }
+        .cpall-orange { color: #F7931E; }
+
+        /* 🌙 พระจันทร์เต็มดวง */
         .moon {
             position: absolute;
-            top: 40px;
+            top: 45px;
             right: 8%;
             width: 90px;
             height: 90px;
@@ -43,6 +57,52 @@
             border-radius: 50%;
             box-shadow: 0 0 30px #ffea75, 0 0 60px rgba(255, 234, 117, 0.3);
             z-index: 1;
+        }
+
+        /* 🛕 เจดีย์ทรงพุ่มข้าวบิณฑ์ ศิลปะสุโขทัย ด้านหลังแม่น้ำ */
+        .sukhothai-pagoda {
+            position: absolute;
+            bottom: 60%; /* ตั้งอยู่เหนือระดับแม่น้ำพอดี */
+            left: 15%;
+            width: 120px;
+            height: 160px;
+            z-index: 1;
+            opacity: 0.25; /* ปรับให้เป็นเงาสะท้อนนวลตาเข้ากับบรรยากาศกลางคืน */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+        /* ยอดเจดีย์ทรงดอกบัวตูม */
+        .pagoda-tip {
+            width: 12px;
+            height: 25px;
+            background: #f1c40f;
+            border-radius: 50% 50% 20% 20%;
+        }
+        /* พุ่มข้าวบิณฑ์ / ดอกบัวตูม */
+        .pagoda-bud {
+            width: 34px;
+            height: 40px;
+            background: #f1c40f;
+            border-radius: 40% 40% 50% 50%;
+            margin-top: -5px;
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+        }
+        /* ฐานเจดีย์ลดหลั่นชั้น */
+        .pagoda-mid {
+            width: 55px;
+            height: 35px;
+            background: #e67e22;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            margin-top: -2px;
+        }
+        .pagoda-base {
+            width: 90px;
+            height: 60px;
+            background: #d35400;
+            clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+            margin-top: -2px;
         }
 
         /* 🏮 ราวไฟปิงปองงานวัด */
@@ -55,7 +115,6 @@
             z-index: 5;
             display: flex;
             justify-content: space-around;
-            padding: 0;
         }
         .light-bulb {
             width: 11px;
@@ -63,24 +122,24 @@
             border-radius: 50% 50% 45% 45%;
             animation: blink 1s infinite alternate;
         }
-        .light-bulb:nth-child(4n+1) { background-color: #ff3838; animation-delay: 0s; box-shadow: 0 0 10px #ff3838; }
-        .light-bulb:nth-child(4n+2) { background-color: #ffbc00; animation-delay: 0.2s; box-shadow: 0 0 10px #ffbc00; }
-        .light-bulb:nth-child(4n+3) { background-color: #2ed573; animation-delay: 0.4s; box-shadow: 0 0 10px #2ed573; }
-        .light-bulb:nth-child(4n+4) { background-color: #1e90ff; animation-delay: 0.6s; box-shadow: 0 0 10px #1e90ff; }
+        .light-bulb:nth-child(4n+1) { background-color: #ff3838; box-shadow: 0 0 10px #ff3838; animation-delay: 0s; }
+        .light-bulb:nth-child(4n+2) { background-color: #ffbc00; box-shadow: 0 0 10px #ffbc00; animation-delay: 0.2s; }
+        .light-bulb:nth-child(4n+3) { background-color: #2ed573; box-shadow: 0 0 10px #2ed573; animation-delay: 0.4s; }
+        .light-bulb:nth-child(4n+4) { background-color: #1e90ff; box-shadow: 0 0 10px #1e90ff; animation-delay: 0.6s; }
 
         @keyframes blink {
             0% { opacity: 0.4; filter: brightness(80%); }
             100% { opacity: 1; filter: brightness(130%); }
         }
 
-        /* 🌫️ โคมลอยยี่เป็ง */
+        /* 🌫️ โคมลอย */
         .sky-lantern {
             position: absolute;
             bottom: -50px;
             background: radial-gradient(circle, #ffeedd 30%, #ffaa44 80%);
             border-radius: 8px 8px 50% 50%;
             box-shadow: 0 0 12px #ffaa44;
-            opacity: 0.6;
+            opacity: 0.55;
             animation: floatUp var(--speed) linear infinite;
             z-index: 1;
         }
@@ -91,7 +150,7 @@
             100% { transform: translateY(-110vh) translateX(var(--drift)) scale(1); opacity: 0; }
         }
 
-        /* 🌊 แม่น้ำลอยกระทง (Responsive) */
+        /* 🌊 แม่น้ำ */
         .river {
             position: absolute;
             bottom: 0;
@@ -105,11 +164,12 @@
             overflow: hidden;
         }
 
-        /* 🪷 ตัวกระทงและการลอย */
+        /* 🪷 ตัวกระทงและการลอยต่อเนื่องไม่หยุด */
         .krathong-item {
             position: absolute;
             cursor: pointer;
-            animation: riverFlow var(--flow-speed) linear forwards;
+            /* เพิ่มความไหลลื่นต่อเนื่องด้วยแอนิเมชันเคลื่อนที่ */
+            animation: riverFlow var(--flow-speed) linear infinite;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -117,74 +177,81 @@
             z-index: 3;
         }
 
+        /* ความเร็วแบบนุ่มนวล ลอยจากซ้ายสุดทะลุไปขวาสุด */
         @keyframes riverFlow {
-            0% { transform: translateX(-150px) translateY(0); }
+            0% { transform: translateX(-220px) translateY(0); }
             50% { transform: translateX(calc(50vw)) translateY(var(--wave-move)); }
-            100% { transform: translateX(calc(100vw + 150px)) translateY(0); }
+            100% { transform: translateX(calc(100vw + 220px)) translateY(0); }
         }
 
         /* แสงเทียน */
         .candle-glow {
-            width: 7px;
-            height: 14px;
+            width: 8px;
+            height: 18px;
             background: radial-gradient(ellipse at bottom, #fff 20%, #ffea75 60%, #ff5722 100%);
             border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 8px #ffea75, 0 0 15px #ff5722;
-            animation: candleWobble 0.6s infinite alternate;
-            margin-bottom: -2px;
+            box-shadow: 0 0 10px #ffea75, 0 0 18px #ff5722;
+            animation: candleWobble 0.5s infinite alternate;
+            margin-bottom: -4px;
+            z-index: 4;
         }
         @keyframes candleWobble {
-            0% { transform: scaleX(1) rotate(-2deg); }
-            100% { transform: scaleX(0.85) rotate(3deg); }
+            0% { transform: scaleX(1) rotate(-3deg); }
+            100% { transform: scaleX(0.85) rotate(4deg); }
         }
 
-        /* ดีไซน์กระทง กราฟิก CSS */
+        /* ดีไซน์รูปทรงกระทง */
         .krathong-visual {
-            width: 66px;
-            height: 36px;
+            width: 80px;
+            height: 45px;
             position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-        .type-classic { background: radial-gradient(ellipse at top, #78e08f, #296d3b); border-radius: 50% 50% 40% 40%; border: 1px solid #1e4625; }
-        .type-classic::before { content: "🌸"; position: absolute; top: -8px; left: 19px; font-size: 19px; }
-        .type-lotus { background: radial-gradient(ellipse at top, #ff9ff3, #f368e0); border-radius: 45% 45% 50% 50%; }
-        .type-lotus::before { content: "💛"; position: absolute; top: -6px; left: 22px; font-size: 14px; }
-        .type-flower { background: radial-gradient(ellipse at top, #ffeaa7, #ffb142); border-radius: 50%; border-bottom: 3px solid #cc8e35; }
-        .type-flower::before { content: "✨"; position: absolute; top: -9px; left: 20px; font-size: 18px; }
-        .type-pastel { background: linear-gradient(135deg, #a8ff78, #78ffd6); border-radius: 30% 30% 50% 50%; }
-        .type-pastel::before { content: "💝"; position: absolute; top: -6px; left: 22px; font-size: 14px; }
+        .type-classic { background: radial-gradient(ellipse at top, #78e08f 20%, #296d3b 80%); border-radius: 50% 50% 45% 45%; border: 2px solid #1a4324; }
+        .type-classic::before { content: "🌸"; position: absolute; top: -10px; left: 22px; font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        
+        .type-lotus { background: radial-gradient(ellipse at top, #ffb6c1 10%, #f368e0 80%); border-radius: 48% 48% 50% 50%; border: 1px solid #c842b2; }
+        .type-lotus::before { content: "💛"; position: absolute; top: -6px; left: 27px; font-size: 16px; }
 
-        /* ป้ายคำอธิษฐานเหนือน้ำ */
+        .type-flower { background: radial-gradient(ellipse at top, #fff2a3 30%, #ff9f43 90%); border-radius: 50%; border-bottom: 5px solid #b36518; }
+        .type-flower::before { content: "✨"; position: absolute; top: -11px; left: 24px; font-size: 22px; }
+
+        .type-pastel { background: linear-gradient(135deg, #70e1f5 0%, #ffd194 100%); border-radius: 40% 40% 50% 50%; border: 1px solid #55b2c4; }
+        .type-pastel::before { content: "💝"; position: absolute; top: -8px; left: 26px; font-size: 18px; }
+
+        /* 📜 ป้ายคำอธิษฐานเหนือน้ำ (แสดงผลเต็มตา ไม่ตัดคำ) */
         .wish-text {
             color: #fffbe0;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            background: rgba(8, 16, 32, 0.8);
-            padding: 3px 8px;
-            border-radius: 10px;
-            margin-top: 5px;
-            white-space: nowrap;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            border: 1px solid rgba(255, 234, 117, 0.2);
+            background: rgba(7, 14, 29, 0.9);
+            padding: 5px 12px;
+            border-radius: 14px;
+            margin-top: 7px;
             text-align: center;
+            border: 1px solid #f1c40f;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            white-space: normal;
+            width: max-content;
+            max-width: 180px;
+            word-wrap: break-word;
         }
 
-        /* กล่องชื่อพนักงานแสดงตอนจิ้ม/ชี้ */
+        /* 👤 กล่องชื่อพนักงาน (แสดงเมื่อจิ้มหรือชี้) */
         .owner-tooltip {
             position: absolute;
-            bottom: 105%;
-            background: linear-gradient(135deg, #ff9f43, #ff5252);
+            bottom: 110%;
+            background: linear-gradient(135deg, #00843D, #F7931E);
             color: #fff;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
             z-index: 1000;
         }
         .krathong-item:hover .owner-tooltip, .krathong-item:active .owner-tooltip {
@@ -192,81 +259,141 @@
             visibility: visible;
         }
 
-        /* 📋 ฟอร์มกรอกข้อมูล (รองรับทั้งคอมและมือถืออัตโนมัติ) */
+        /* 📋 ฟอร์มกรอกข้อมูล */
         .form-panel {
             position: absolute;
             top: 25%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(11, 19, 43, 0.92);
-            border: 2px solid #f39c12;
+            background: rgba(11, 19, 43, 0.94);
+            border: 2px solid #00843D;
             padding: 22px;
             border-radius: 18px;
-            width: 90%;
-            max-width: 380px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            width: 92%;
+            max-width: 390px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
             z-index: 10;
             backdrop-filter: blur(8px);
             text-align: center;
             transition: all 0.3s ease;
         }
-        .form-panel h2 { color: #f1c40f; margin-bottom: 15px; font-size: 20px; font-weight: 700; }
+        .form-panel h2 { color: #f1c40f; margin-bottom: 15px; font-size: 21px; font-weight: 700; }
         .input-group { margin-bottom: 12px; text-align: left; }
-        .input-group label { color: #ffeedd; display: block; margin-bottom: 4px; font-size: 13px; }
+        .input-group label { color: #ffeedd; display: block; margin-bottom: 5px; font-size: 13px; }
         .input-group input, .input-group textarea {
             width: 100%; padding: 10px; background: rgba(255,255,255,0.08);
             border: 1px solid #556781; border-radius: 8px; color: #fff; font-size: 14px; outline: none;
         }
-        .input-group input:focus, .input-group textarea:focus { border-color: #f1c40f; background: rgba(255,255,255,0.12); }
+        .input-group input:focus, .input-group textarea:focus { border-color: #00843D; background: rgba(255,255,255,0.12); }
+        
+        /* 🎨 โซนเลือกรูปแบบกระทง */
+        .krathong-selector {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0 18px 0;
+            gap: 8px;
+        }
+        .select-option {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #556781;
+            border-radius: 10px;
+            padding: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .select-option span { font-size: 20px; }
+        .select-option p { color: #ccc; font-size: 11px; }
+        .select-option.active {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.15);
+        }
+        .select-option.active p { color: #f39c12; font-weight: bold; }
+
         .btn-submit {
-            width: 100%; padding: 11px; background: linear-gradient(to right, #f39c12, #e67e22);
-            border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: bold; cursor: pointer;
+            width: 100%; padding: 12px; background: linear-gradient(to right, #00843D, #e67e22);
+            border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer;
         }
 
-        /* ปุ่มลอยเพิ่มอีกลูก (จะโผล่มาเมื่อกรอกเสร็จแล้วปิดฟอร์มไป เพื่อให้จอมือถือโล่งๆ) */
         .btn-reopen {
             position: absolute; bottom: 20px; right: 20px;
-            background: linear-gradient(to right, #f39c12, #e67e22);
-            color: #fff; border: none; padding: 10px 18px; font-weight: bold;
-            border-radius: 20px; font-size: 14px; z-index: 20; cursor: pointer;
+            background: linear-gradient(to right, #00843D, #F7931E);
+            color: #fff; border: none; padding: 11px 20px; font-weight: bold;
+            border-radius: 25px; font-size: 14px; z-index: 20; cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: none;
         }
 
-        /* 📱 ปรับหน้าต่างเฉพาะเมื่อเปิดบนสมาร์ทโฟนจอเล็ก (Mobile CSS) */
+        /* 📱 ปรับหน้าจอ Mobile Responsive */
         @media (max-width: 600px) {
+            .cpall-logo { top: 48px; font-size: 20px; }
             .moon { width: 65px; height: 65px; top: 50px; }
+            .sukhothai-pagoda { bottom: 65%; left: 10%; transform: scale(0.75); opacity: 0.2; }
             .form-panel {
                 top: auto; bottom: 15px; transform: translate(-50%, 0);
                 padding: 15px; border-radius: 14px;
             }
-            .form-panel h2 { font-size: 17px; margin-bottom: 10px; }
+            .form-panel h2 { font-size: 18px; margin-bottom: 8px; }
             .input-group { margin-bottom: 8px; }
             .input-group input, .input-group textarea { padding: 8px; font-size: 13px; }
-            .btn-submit { padding: 9px; font-size: 14px; }
-            .river { height: 65%; top: 0; bottom: auto; border-bottom: 2px solid rgba(255,255,255,0.1); border-top: none; }
+            .krathong-selector { margin: 8px 0 12px 0; }
+            .select-option { padding: 6px 0; }
+            .select-option span { font-size: 16px; }
+            .select-option p { font-size: 10px; }
+            .btn-submit { padding: 10px; font-size: 14px; }
+            .river { height: 65%; top: 0; bottom: auto; border-bottom: 2px solid rgba(255,255,255,0.1); }
         }
     </style>
 </head>
 <body>
 
     <div class="festival-container">
+        <div class="cpall-logo"><span class="cpall-green">CP</span><span class="cpall-orange">ALL</span></div>
+
         <div class="party-lights" id="lightsRow"></div>
         
         <div class="moon"></div>
 
+        <div class="sukhothai-pagoda">
+            <div class="pagoda-tip"></div>
+            <div class="pagoda-bud"></div>
+            <div class="pagoda-mid"></div>
+            <div class="pagoda-base"></div>
+        </div>
+
         <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
 
         <div class="form-panel" id="inputForm">
-            <h2>🪷 ลอยกระทงออนไลน์ 🪷</h2>
+            <h2>🪷 7-11 ลอยกระทงออนไลน์ 🪷</h2>
             <div class="input-group">
-                <label>ชื่อพนักงาน / แผนก</label>
+                <label>ชื่อพนักงาน / รหัสสาขา / แผนก</label>
                 <input type="text" id="empName" placeholder="ระบุชื่อของคุณ..." required maxlength="30">
             </div>
             <div class="input-group">
                 <label>คำอธิษฐานขอพร</label>
-                <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งานปัง ราบรื่น ร่ำรวย..." required maxlength="60"></textarea>
+                <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งานปัง ยอดขายทะลุเป้า ร่ำรวย..." required maxlength="70"></textarea>
             </div>
-            <button class="btn-submit" onclick="launchKrathong()">ปล่อยกระทงลงน้ำ ✨</button>
+            
+            <label style="color: #ffeedd; display: block; text-align: left; font-size: 13px;">เลือกรูปแบบกระทง</label>
+            <div class="krathong-selector">
+                <div class="select-option active" onclick="selectStyle('classic', this)">
+                    <span>🌸</span><p>ใบตอง</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('lotus', this)">
+                    <span>🪷</span><p>กลีบบัว</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('flower', this)">
+                    <span>✨</span><p>ดอกไม้ทอง</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('pastel', this)">
+                    <span>💝</span><p>พาสเทล</p>
+                </div>
+            </div>
+
+            <button class="btn-submit" onclick="launchKrathong()">ปล่อยกระทงลงแม่น้ำ ✨</button>
         </div>
 
         <div class="river" id="riverWater"></div>
@@ -276,7 +403,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 🔥 นำชุดข้อมูล Config จาก Firebase ของคุณมาใส่ตรงนี้ได้เลยครับ
+        // 🔥 นำชุดข้อมูล Config จาก Firebase ตัวเดิมของคุณมาใส่ตรงนี้ได้เลยครับ
         const firebaseConfig = {
             apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
             authDomain: "loikatong.firebaseapp.com",
@@ -290,7 +417,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ฟังก์ชันส่งกระทงขึ้นคลาวด์
+        let selectedKrathongStyle = 'classic';
+        window.selectStyle = function(styleName, element) {
+            selectedKrathongStyle = styleName;
+            document.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+        }
+
         window.launchKrathong = async function() {
             const nameInput = document.getElementById('empName').value.trim();
             const wishInput = document.getElementById('empWish').value.trim();
@@ -300,29 +433,22 @@
                 return;
             }
 
-            const styles = ['classic', 'lotus', 'flower', 'pastel'];
-            const randomStyle = styles[Math.floor(Math.random() * styles.length)];
-
             try {
                 await addDoc(collection(db, "krathongs"), {
                     name: nameInput,
                     wish: wishInput,
-                    styleType: randomStyle,
+                    styleType: selectedKrathongStyle,
                     timestamp: new Date().getTime()
                 });
 
-                // เคลียร์ค่าในช่องพิมพ์
                 document.getElementById('empWish').value = '';
-                
-                // สลับซ่อนฟอร์ม เพื่อแสดงหน้าจอแม่น้ำให้เต็มตาบนจอมือถือ
                 toggleForm(false);
             } catch (e) {
-                console.error("Error adding document: ", e);
-                alert("ระบบเชื่อมต่อขัดข้องชั่วคราว");
+                console.error("Error: ", e);
+                alert("ระบบขัดข้องชั่วคราว");
             }
         }
 
-        // ดักฟังและรับข้อมูลการลอยกระทงแบบ Real-time
         const q = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
         onSnapshot(q, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
@@ -335,7 +461,6 @@
     </script>
 
     <script>
-        // ฟังก์ชันสลับการมองเห็นกล่องกรอกข้อมูล เพื่อซ่อนหน้าต่างบนมือถือเมื่อลอยเสร็จ
         function toggleForm(show) {
             const form = document.getElementById('inputForm');
             const reopenBtn = document.getElementById('reopenBtn');
@@ -348,7 +473,7 @@
             }
         }
 
-        // วาดหลอดไฟงานวัดประดับด้านบน
+        // วาดหลอดไฟงานวัด
         const lightsRow = document.getElementById('lightsRow');
         const bulbCount = Math.floor(window.innerWidth / 28);
         for(let i=0; i<bulbCount; i++) {
@@ -357,7 +482,7 @@
             lightsRow.appendChild(bulb);
         }
 
-        // ปล่อยโคมลอยยี่เป็งขึ้นฟ้า
+        // สุ่มปล่อยโคมลอยยี่เป็งขึ้นฟ้า
         const festivalContainer = document.querySelector('.festival-container');
         function createSkyLantern() {
             const lantern = document.createElement('div');
@@ -373,23 +498,23 @@
         }
         setInterval(createSkyLantern, 2000);
 
-        // แสดงผลกระทงบนหน้าจอแม่น้ำ
+        // ฟังก์ชันวาดกระทงลงในแม่น้ำและตั้งค่าให้ลอยวนต่อเนื่อง
         function renderKrathong(name, wish, styleType) {
             const river = document.getElementById('riverWater');
             const item = document.createElement('div');
             item.className = 'krathong-item';
 
-            // สุ่มพิกัด Y บนแม่น้ำ
+            // สุ่มพิกัด Y ความลึกของแม่น้ำ
             const randomTop = Math.random() * 75 + 10;
             item.style.top = randomTop + '%';
 
-            // คำนวณความเร็วในการไหลตามระยะลึก (Perspective มิติสายตา)
-            const speed = Math.random() * 15 + 22; 
+            // ความเร็วแบบเอื่อยๆ ไหลต่อเนื่อง (25 - 40 วินาทีต่อรอบจอ)
+            const speed = Math.random() * 15 + 25; 
             item.style.setProperty('--flow-speed', speed + 's');
             item.style.setProperty('--wave-move', (Math.random() * 26 - 13) + 'px');
 
-            // ปรับย่อขนาดกระทงตามความลึก (ไกลตัวจะเล็ก ใกล้ตัวจะใหญ่)
-            const scaleValue = 0.5 + (randomTop / 120);
+            // ปรับขนาดกระทงตามระดับน้ำ (หน้าใหญ่-หลังเล็กเพิ่มมิติ)
+            const scaleValue = 0.52 + (randomTop / 125);
             item.style.transform = `scale(${scaleValue})`;
 
             item.innerHTML = `
@@ -400,9 +525,6 @@
             `;
 
             river.appendChild(item);
-
-            // ลบออกจากหน่วยความจำเมื่อลอยพ้นจอไปแล้ว คอมพิวเตอร์จะได้ไม่ช้าและกระตุก
-            setTimeout(() => item.remove(), speed * 1000);
         }
     </script>
 </body>
