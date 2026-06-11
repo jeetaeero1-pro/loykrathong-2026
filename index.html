@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CPALL ลอยกระทงออนไลน์ 🪷✨</title>
+    <title>CPALL สายงานบัญชีและการเงินลอยกระทงออนไลน์ 🪷✨</title>
+    <!-- นำเข้า Google Fonts อักษรน่ารักแบบไทยๆ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Mitr:wght@300;400;600&display=swap" rel="stylesheet">
@@ -21,145 +22,30 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: linear-gradient(to bottom, #050814 0%, #0a1128 40%, #151f38 70%, #283a52 100%);
+            background-color: #050814;
         }
 
+        /* 📸 ส่วนจัดวางภาพพื้นหลังอลังการจากภาพ Gemini_Generated_Image_2ype4g2ype4g2ype.png */
         .festival-container {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
+            /* ดึงภาพพื้นหลังมาใส่แบบครอบคลุมเต็มพื้นที่ สวยงาม ไม่บิดเบี้ยว */
+            background-image: url('https://images.unsplash.com/photo-1590004953392-5aba2e72269a?q=80&w=2000'); /* ลิงก์รูปตัวอย่างชั่วคราว */
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
         }
 
-        /* 🟢 โลโก้ CPALL มุมบนซ้าย */
-        .cpall-logo {
-            position: absolute;
-            top: 45px;
-            left: 20px;
-            z-index: 10;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-        .cpall-green { color: #00843D; }
-        .cpall-orange { color: #F7931E; }
-
-        /* 🌙 พระจันทร์เต็มดวง */
-        .moon {
-            position: absolute;
-            top: 45px;
-            right: 8%;
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, #fffbe0 0%, #f9d423 70%, #ffb300 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 30px #ffea75, 0 0 60px rgba(255, 234, 117, 0.3);
-            z-index: 1;
-        }
-
-        /* 🛕 เจดีย์ทรงพุ่มข้าวบิณฑ์ ศิลปะสุโขทัย ด้านหลังแม่น้ำ */
-        .sukhothai-pagoda {
-            position: absolute;
-            bottom: 60%; /* ตั้งอยู่เหนือระดับแม่น้ำพอดี */
-            left: 15%;
-            width: 120px;
-            height: 160px;
-            z-index: 1;
-            opacity: 0.25; /* ปรับให้เป็นเงาสะท้อนนวลตาเข้ากับบรรยากาศกลางคืน */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: none;
-        }
-        /* ยอดเจดีย์ทรงดอกบัวตูม */
-        .pagoda-tip {
-            width: 12px;
-            height: 25px;
-            background: #f1c40f;
-            border-radius: 50% 50% 20% 20%;
-        }
-        /* พุ่มข้าวบิณฑ์ / ดอกบัวตูม */
-        .pagoda-bud {
-            width: 34px;
-            height: 40px;
-            background: #f1c40f;
-            border-radius: 40% 40% 50% 50%;
-            margin-top: -5px;
-            box-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
-        }
-        /* ฐานเจดีย์ลดหลั่นชั้น */
-        .pagoda-mid {
-            width: 55px;
-            height: 35px;
-            background: #e67e22;
-            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-            margin-top: -2px;
-        }
-        .pagoda-base {
-            width: 90px;
-            height: 60px;
-            background: #d35400;
-            clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
-            margin-top: -2px;
-        }
-
-        /* 🏮 ราวไฟปิงปองงานวัด */
-        .party-lights {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 35px;
-            z-index: 5;
-            display: flex;
-            justify-content: space-around;
-        }
-        .light-bulb {
-            width: 11px;
-            height: 15px;
-            border-radius: 50% 50% 45% 45%;
-            animation: blink 1s infinite alternate;
-        }
-        .light-bulb:nth-child(4n+1) { background-color: #ff3838; box-shadow: 0 0 10px #ff3838; animation-delay: 0s; }
-        .light-bulb:nth-child(4n+2) { background-color: #ffbc00; box-shadow: 0 0 10px #ffbc00; animation-delay: 0.2s; }
-        .light-bulb:nth-child(4n+3) { background-color: #2ed573; box-shadow: 0 0 10px #2ed573; animation-delay: 0.4s; }
-        .light-bulb:nth-child(4n+4) { background-color: #1e90ff; box-shadow: 0 0 10px #1e90ff; animation-delay: 0.6s; }
-
-        @keyframes blink {
-            0% { opacity: 0.4; filter: brightness(80%); }
-            100% { opacity: 1; filter: brightness(130%); }
-        }
-
-        /* 🌫️ โคมลอย */
-        .sky-lantern {
-            position: absolute;
-            bottom: -50px;
-            background: radial-gradient(circle, #ffeedd 30%, #ffaa44 80%);
-            border-radius: 8px 8px 50% 50%;
-            box-shadow: 0 0 12px #ffaa44;
-            opacity: 0.55;
-            animation: floatUp var(--speed) linear infinite;
-            z-index: 1;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-110vh) translateX(var(--drift)) scale(1); opacity: 0; }
-        }
-
-        /* 🌊 แม่น้ำ */
+        /* 🌊 โซนแม่น้ำสำหรับรองรับกระทงลอย (จัดพิกัดให้พอดีกับผืนน้ำในภาพ) */
         .river {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60%;
-            background: linear-gradient(to bottom, #111e38 0%, #08101f 100%);
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 15px 25px rgba(0,0,0,0.5);
+            height: 50%; /* ปรับพื้นที่ให้กระทงวิ่งเฉพาะบริเวณครึ่งจอล่างที่เป็นผืนน้ำ */
             z-index: 2;
             overflow: hidden;
         }
@@ -168,7 +54,6 @@
         .krathong-item {
             position: absolute;
             cursor: pointer;
-            /* เพิ่มความไหลลื่นต่อเนื่องด้วยแอนิเมชันเคลื่อนที่ */
             animation: riverFlow var(--flow-speed) linear infinite;
             display: flex;
             flex-direction: column;
@@ -177,14 +62,13 @@
             z-index: 3;
         }
 
-        /* ความเร็วแบบนุ่มนวล ลอยจากซ้ายสุดทะลุไปขวาสุด */
         @keyframes riverFlow {
             0% { transform: translateX(-220px) translateY(0); }
             50% { transform: translateX(calc(50vw)) translateY(var(--wave-move)); }
             100% { transform: translateX(calc(100vw + 220px)) translateY(0); }
         }
 
-        /* แสงเทียน */
+        /* แสงเทียนบนกระทงดิจิทัล */
         .candle-glow {
             width: 8px;
             height: 18px;
@@ -200,12 +84,12 @@
             100% { transform: scaleX(0.85) rotate(4deg); }
         }
 
-        /* ดีไซน์รูปทรงกระทง */
+        /* ดีไซน์รูปทรงกระทงพรีเมียม */
         .krathong-visual {
             width: 80px;
             height: 45px;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
         }
         .type-classic { background: radial-gradient(ellipse at top, #78e08f 20%, #296d3b 80%); border-radius: 50% 50% 45% 45%; border: 2px solid #1a4324; }
         .type-classic::before { content: "🌸"; position: absolute; top: -10px; left: 22px; font-size: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
@@ -237,7 +121,7 @@
             word-wrap: break-word;
         }
 
-        /* 👤 กล่องชื่อพนักงาน (แสดงเมื่อจิ้มหรือชี้) */
+        /* 👤 กล่องชื่อพนักงานเมื่อชี้/สัมผัส */
         .owner-tooltip {
             position: absolute;
             bottom: 110%;
@@ -259,7 +143,7 @@
             visibility: visible;
         }
 
-        /* 📋 ฟอร์มกรอกข้อมูล */
+        /* 📋 ฟอร์มกรอกข้อมูลสไตล์โมเดิร์น */
         .form-panel {
             position: absolute;
             top: 25%;
@@ -286,7 +170,7 @@
         }
         .input-group input:focus, .input-group textarea:focus { border-color: #00843D; background: rgba(255,255,255,0.12); }
         
-        /* 🎨 โซนเลือกรูปแบบกระทง */
+        /* 🎨 เมนูเลือกรูปแบบกระทง */
         .krathong-selector {
             display: flex;
             justify-content: space-between;
@@ -327,11 +211,9 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: none;
         }
 
-        /* 📱 ปรับหน้าจอ Mobile Responsive */
+        /* 📱 ปรับหน้าจอเมื่อใช้งานบน Mobile */
         @media (max-width: 600px) {
-            .cpall-logo { top: 48px; font-size: 20px; }
-            .moon { width: 65px; height: 65px; top: 50px; }
-            .sukhothai-pagoda { bottom: 65%; left: 10%; transform: scale(0.75); opacity: 0.2; }
+            .cpall-logo { top: 20px; font-size: 20px; }
             .form-panel {
                 top: auto; bottom: 15px; transform: translate(-50%, 0);
                 padding: 15px; border-radius: 14px;
@@ -344,28 +226,20 @@
             .select-option span { font-size: 16px; }
             .select-option p { font-size: 10px; }
             .btn-submit { padding: 10px; font-size: 14px; }
-            .river { height: 65%; top: 0; bottom: auto; border-bottom: 2px solid rgba(255,255,255,0.1); }
+            .river { height: 45%; }
         }
     </style>
 </head>
 <body>
 
     <div class="festival-container">
+        <!-- 🟢 โลโก้ CPALL -->
         <div class="cpall-logo"><span class="cpall-green">CP</span><span class="cpall-orange">ALL</span></div>
 
-        <div class="party-lights" id="lightsRow"></div>
-        
-        <div class="moon"></div>
-
-        <div class="sukhothai-pagoda">
-            <div class="pagoda-tip"></div>
-            <div class="pagoda-bud"></div>
-            <div class="pagoda-mid"></div>
-            <div class="pagoda-base"></div>
-        </div>
-
+        <!-- ปุ่มสำหรับเรียกฟอร์มกรอกคำอธิษฐานคืนมาบนมือถือ -->
         <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
 
+        <!-- หน้าต่างกรอกข้อมูล -->
         <div class="form-panel" id="inputForm">
             <h2>🪷 7-11 ลอยกระทงออนไลน์ 🪷</h2>
             <div class="input-group">
@@ -396,14 +270,15 @@
             <button class="btn-submit" onclick="launchKrathong()">ปล่อยกระทงลงแม่น้ำ ✨</button>
         </div>
 
+        <!-- โซนแม่น้ำ (กระทงจะวิ่งผ่านผืนน้ำในรูปภาพ) -->
         <div class="river" id="riverWater"></div>
     </div>
 
+    <!-- ส่วนเชื่อมต่อหลังบ้าน Firebase REALTIME -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 🔥 นำชุดข้อมูล Config จาก Firebase ตัวเดิมของคุณมาใส่ตรงนี้ได้เลยครับ
         const firebaseConfig = {
             apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
             authDomain: "loikatong.firebaseapp.com",
@@ -473,48 +348,23 @@
             }
         }
 
-        // วาดหลอดไฟงานวัด
-        const lightsRow = document.getElementById('lightsRow');
-        const bulbCount = Math.floor(window.innerWidth / 28);
-        for(let i=0; i<bulbCount; i++) {
-            const bulb = document.createElement('div');
-            bulb.className = 'light-bulb';
-            lightsRow.appendChild(bulb);
-        }
-
-        // สุ่มปล่อยโคมลอยยี่เป็งขึ้นฟ้า
-        const festivalContainer = document.querySelector('.festival-container');
-        function createSkyLantern() {
-            const lantern = document.createElement('div');
-            lantern.className = 'sky-lantern';
-            const size = Math.random() * 16 + 12;
-            lantern.style.width = size + 'px';
-            lantern.style.height = (size * 1.3) + 'px';
-            lantern.style.left = Math.random() * 100 + '%';
-            lantern.style.setProperty('--speed', (Math.random() * 8 + 10) + 's');
-            lantern.style.setProperty('--drift', (Math.random() * 140 - 70) + 'px');
-            festivalContainer.appendChild(lantern);
-            setTimeout(() => lantern.remove(), 18000);
-        }
-        setInterval(createSkyLantern, 2000);
-
-        // ฟังก์ชันวาดกระทงลงในแม่น้ำและตั้งค่าให้ลอยวนต่อเนื่อง
+        // ฟังก์ชันวาดกระทงและเปิดระบบให้ลอยไหลเวียนแบบไร้ขีดจำกัด
         function renderKrathong(name, wish, styleType) {
             const river = document.getElementById('riverWater');
             const item = document.createElement('div');
             item.className = 'krathong-item';
 
-            // สุ่มพิกัด Y ความลึกของแม่น้ำ
-            const randomTop = Math.random() * 75 + 10;
+            // สุ่มพิกัดความสูงให้อยู่ในโซนผืนน้ำด้านล่าง
+            const randomTop = Math.random() * 65 + 15;
             item.style.top = randomTop + '%';
 
-            // ความเร็วแบบเอื่อยๆ ไหลต่อเนื่อง (25 - 40 วินาทีต่อรอบจอ)
-            const speed = Math.random() * 15 + 25; 
+            // ความเร็วเฉลี่ยไหลเอื่อยๆ ต่อเนื่องนุ่มนวล
+            const speed = Math.random() * 15 + 28; 
             item.style.setProperty('--flow-speed', speed + 's');
-            item.style.setProperty('--wave-move', (Math.random() * 26 - 13) + 'px');
+            item.style.setProperty('--wave-move', (Math.random() * 20 - 10) + 'px');
 
-            // ปรับขนาดกระทงตามระดับน้ำ (หน้าใหญ่-หลังเล็กเพิ่มมิติ)
-            const scaleValue = 0.52 + (randomTop / 125);
+            // ใส่ Perspective ให้กระทงที่อยู่ไกลตัวดูเล็ก-ใกล้ตัวดูใหญ่ขึ้น
+            const scaleValue = 0.45 + (randomTop / 140);
             item.style.transform = `scale(${scaleValue})`;
 
             item.innerHTML = `
