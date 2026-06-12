@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ลอยกระทงออนไลน์ CPALL🪷✨</title>
+    <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Mitr:wght@300;400;600&display=swap" rel="stylesheet">
@@ -37,24 +37,10 @@
             background-repeat: no-repeat;
         }
 
-        /* 🟢 โลโก้ CPALL */
-        .cpall-logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-        }
-        .cpall-green { color: #00843D; }
-        .cpall-orange { color: #F7931E; }
-
         /* 📜 บอร์ดชาร์ตใสแสดงประวัติผู้โชคดี (History) มุมซ้ายบน */
         .winner-history-panel {
             position: absolute;
-            top: 65px;
+            top: 20px;
             left: 20px;
             z-index: 90;
             background: rgba(11, 19, 43, 0.65);
@@ -89,7 +75,7 @@
         .history-date { color: #8892b0; }
         .history-name { color: #2ecc71; font-weight: 600; text-align: right; width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* 🏆 Pop-Up ประกาศผู้โชคดีด้านบนจอกลาง (โชว์ 5 นาที) */
+        /* 🏆 Pop-Up ประกาศผู้โชคดีด้านบนจอกลาง */
         .winner-popup {
             position: absolute;
             top: 20px;
@@ -124,7 +110,7 @@
             overflow: hidden;
         }
 
-        /* 🪷 ตัวกระทงและการลอยต่อเนื่องไม่หยุด */
+        /* 🪷 ตัวกระทงและการลอยต่อเนื่อง */
         .krathong-item {
             position: absolute;
             cursor: pointer;
@@ -142,12 +128,52 @@
             100% { transform: translateX(calc(100vw + 220px)) translateY(0); }
         }
 
-        /* 🖼️ ปรับปรุงใหม่: เปลี่ยนเป็นกรอบแสดงรูปภาพกระทงจริงแทน CSS */
+        /* 🕯️ คอมโปเนนต์สำหรับจัดวางเทียนและประกายแสงให้อยู่เหนือน้ำประกอบกับตัวรูป */
+        .krathong-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 🕯️ ตัวแท่งเทียน */
+        .real-candle {
+            position: absolute;
+            bottom: 60px; /* ดันแท่งเทียนขึ้นไปปักบนกระทง */
+            width: 6px;
+            height: 28px;
+            background: linear-gradient(to right, #ffee55, #f39c12);
+            border-radius: 2px;
+            z-index: 4;
+        }
+
+        /* 🔥 เปลวไฟเทียนและประกายแสงประกายวิบวับ */
+        .real-flame {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 18px;
+            background: radial-gradient(circle at bottom, #ffffff 10%, #ffaa00 40%, rgba(255, 0, 0, 0) 80%);
+            border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+            animation: flameGlow 0.8s ease-in-out infinite alternate;
+            box-shadow: 0 0 15px #ffaa00, 0 0 25px #ff5500;
+        }
+
+        @keyframes flameGlow {
+            0% { transform: translateX(-50%) scale(0.9) rotate(-2deg); opacity: 0.85; }
+            100% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 1; box-shadow: 0 0 22px #ffaa00, 0 0 35px #ff5500; }
+        }
+
+        /* 🖼️ รูปภาพกระทงหลัก */
         .krathong-visual {
-            width: 90px;
-            height: 80px;
+            width: 100px;
+            height: auto;
+            max-height: 85px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+            z-index: 3;
         }
 
         /* 📜 ป้ายคำอธิษฐานเหนือน้ำ */
@@ -158,7 +184,7 @@
             background: rgba(7, 14, 29, 0.9);
             padding: 5px 12px;
             border-radius: 14px;
-            margin-top: 4px;
+            margin-top: 6px;
             text-align: center;
             border: 1px solid #f1c40f;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
@@ -166,12 +192,13 @@
             width: max-content;
             max-width: 180px;
             word-wrap: break-word;
+            z-index: 5;
         }
 
         /* 👤 กล่องชื่อพนักงานเมื่อชี้/สัมผัส */
         .owner-tooltip {
             position: absolute;
-            bottom: 105%;
+            bottom: 115%;
             background: linear-gradient(135deg, #00843D, #F7931E);
             color: #fff;
             padding: 5px 10px;
@@ -217,7 +244,7 @@
         }
         .input-group input:focus, .input-group textarea:focus { border-color: #00843D; background: rgba(255,255,255,0.12); }
         
-        /* 🎨 เมนูเลือกรูปแบบกระทงดีไซน์ใหม่ดึงจากรูปภาพ */
+        /* 🎨 เมนูเลือกรูปแบบกระทง */
         .krathong-selector {
             display: flex;
             justify-content: space-between;
@@ -237,7 +264,7 @@
             align-items: center;
             gap: 4px;
         }
-        .select-option img { width: 40px; height: 35px; object-fit: contain; }
+        .select-option img { width: 45px; height: 40px; object-fit: contain; }
         .select-option p { color: #ccc; font-size: 11px; white-space: nowrap; }
         .select-option.active {
             border-color: #f39c12;
@@ -258,10 +285,9 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.4); display: none;
         }
 
-        /* 📱 ปรับแต่งหน้าจอมือถือ */
+        /* 📱 จัดหน้าจอมือถือ */
         @media (max-width: 600px) {
-            .cpall-logo { top: 15px; font-size: 18px; }
-            .winner-history-panel { top: 50px; left: 15px; width: 180px; max-height: 120px; padding: 8px; }
+            .winner-history-panel { top: 20px; left: 15px; width: 180px; max-height: 120px; padding: 8px; }
             .winner-history-panel h3 { font-size: 11px; margin-bottom: 4px; }
             .history-list { font-size: 10px; }
             .winner-popup { padding: 8px 15px; top: 10px; max-width: 90%; }
@@ -278,29 +304,25 @@
             .input-group input, .input-group textarea { padding: 9px; font-size: 13px; }
             .krathong-selector { margin: 8px 0 12px 0; gap: 4px; }
             .select-option { padding: 4px 0; }
-            .select-option img { width: 32px; height: 28px; }
+            .select-option img { width: 35px; height: 32px; }
             .select-option p { font-size: 9.5px; }
             .btn-submit { padding: 11px; font-size: 15px; }
             .river { height: 45%; }
-            .krathong-visual { width: 70px; height: 62px; }
+            .krathong-visual { width: 75px; max-height: 65px; }
+            .real-candle { bottom: 48px; height: 22px; width: 5px; }
         }
     </style>
 </head>
 <body>
 
     <div class="festival-container">
-        <!-- 🟢 โลโก้ CPALL -->
-        <div class="cpall-logo"><span class="cpall-green">CP</span><span class="cpall-orange">ALL</span></div>
-
-        <!-- 📜 บอร์ดชาร์ตใสแสดงประวัติผู้โชคดี (History) มุมซ้ายบน -->
+        <!-- บอร์ดประวัติผู้โชคดี -->
         <div class="winner-history-panel">
             <h3>🏆 ประวัติผู้โชคดีประจำวัน</h3>
-            <ul class="history-list" id="historyList">
-                <!-- รายชื่อจะไหลเข้าตรงนี้อัตโนมัติ -->
-            </ul>
+            <ul class="history-list" id="historyList"></ul>
         </div>
 
-        <!-- 🏆 Pop-Up ประกาศรางวัลสุ่มลอยตรงกลางด้านบน -->
+        <!-- Pop-Up ประกาศรางวัล -->
         <div class="winner-popup" id="winnerAlert">
             <h2>🎉 ยินดีด้วยกับผู้โชคดีประจำวัน 🎉</h2>
             <p id="winnerNameDisplay">กำลังสุ่มหาผู้โชคดี...</p>
@@ -308,39 +330,44 @@
 
         <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
 
-        <!-- 📋 กล่องกรอกข้อมูลลอยอยู่ตรงกลางจอ -->
+        <!-- ฟอร์มกรอกข้อมูลลอยกระทง -->
         <div class="form-panel" id="inputForm">
             <h2>🪷 ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷</h2>
+            
             <div class="input-group">
-                <label>ชื่อพนักงาน / แผนก</label>
-                <input type="text" id="empName" placeholder="ระบุชื่อและแผนกของคุณ..." required maxlength="30">
+                <label>ชื่อพนักงาน (ภาษาไทยเท่านั้น)</label>
+                <!-- 🛠️ ตรวจสอบแบบ Realtime ให้กรอกได้เฉพาะภาษาไทยและเว้นวรรคเท่านั้น -->
+                <input type="text" id="empName" placeholder="ระบุชื่อภาษาไทย..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
             </div>
+            
             <div class="input-group">
-                <label>รหัสพนักงาน (เพื่อป้องกันการร่วมสนุกซ้ำ)</label>
-                <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน 8 หลัก..." required maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <label>รหัสพนักงาน 7 หลัก (ตัวเลขเท่านั้น)</label>
+                <!-- 🛠️ ตรวจสอบให้กรอกได้เฉพาะตัวเลขและจำกัดสิทธิ์สูงสุดแค่ 7 ตัวอักษรเท่านั้น -->
+                <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน 7 หลัก..." required maxlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
+            
             <div class="input-group">
-                <label>คำอธิษฐานขอพร</label>
+                <label>คำอธิษฐานขอพร (กรอกตัวเลข ตัวอักษร หรืออักขระพิเศษได้อิสระ)</label>
+                <!-- 🛠️ ช่องคำอธิษฐานพิมพ์ตัวเลข สัญลักษณ์ ภาษาอังกฤษ หรือภาษาไทยได้ครบเต็มที่ -->
                 <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งานปัง ยอดขายทะลุเป้า ร่ำรวย..." required maxlength="70"></textarea>
             </div>
             
             <label style="color: #ffeedd; display: block; text-align: left; font-size: 13px;">เลือกรูปแบบกระทง</label>
-            <!-- 🎨 ปรับปรุงส่วนนี้: ชี้ลิงก์ภาพไปยังไฟล์ภาพจริงทั้ง 4 ภาพ -->
             <div class="krathong-selector">
                 <div class="select-option active" onclick="selectStyle('Employee.jpg', this)">
-                    <img src="Employee.jpg" alt="คนสู้ชีวิต">
+                    <img src="./Employee.jpg" alt="คนสู้ชีวิต">
                     <p>คนสู้ชีวิต</p>
                 </div>
                 <div class="select-option" onclick="selectStyle('Doc.jpg', this)">
-                    <img src="Doc.jpg" alt="กองเอกสาร">
+                    <img src="./Doc.jpg" alt="กองเอกสาร">
                     <p>กองเอกสาร</p>
                 </div>
                 <div class="select-option" onclick="selectStyle('Pink.jpg', this)">
-                    <img src="Pink.jpg" alt="บัวชมพู">
+                    <img src="./Pink.jpg" alt="บัวชมพู">
                     <p>บัวชมพู</p>
                 </div>
                 <div class="select-option" onclick="selectStyle('Green.png', this)">
-                    <img src="Green.png" alt="ใบตองเขียว">
+                    <img src="./Green.png" alt="ใบตองเขียว">
                     <p>ใบตองเขียว</p>
                 </div>
             </div>
@@ -351,10 +378,10 @@
         <div class="river" id="riverWater"></div>
     </div>
 
-    <!-- ส่วนเชื่อมต่อหลังบ้าน Firebase REALTIME + LUCKY DRAW SYSTEM -->
+    <!-- ส่วนเชื่อมต่อหลังบ้าน Firebase REALTIME -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
@@ -371,14 +398,13 @@
 
         let participantsList = []; 
 
-        let selectedKrathongStyle = 'Employee.jpg'; // ตั้งค่าเริ่มต้นเป็นรูปหนุ่มบัญชีไฟลุก
+        let selectedKrathongStyle = 'Employee.jpg'; 
         window.selectStyle = function(styleName, element) {
             selectedKrathongStyle = styleName;
             document.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('active'));
             element.classList.add('active');
         }
 
-        // 🚀 ฟังก์ชันการปล่อยกระทง บันทึกชื่อไฟล์ภาพลง Firebase
         window.launchKrathong = async function() {
             const nameInput = document.getElementById('empName').value.trim();
             const idInput = document.getElementById('empId').value.trim();
@@ -389,13 +415,25 @@
                 return;
             }
 
+            // 🛠️ Double Check ความถูกต้องสุดท้ายก่อนอัปเดตลงฐานข้อมูล
+            if(idInput.length !== 7) {
+                alert('❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดีเป๊ะค่ะ รบกวนตรวจสอบอีกครั้งนะคะ');
+                return;
+            }
+
+            const thaiRegex = /^[ก-๙\s]+$/;
+            if(!thaiRegex.test(nameInput)) {
+                alert('❌ ช่องชื่อพนักงานกรอกได้เฉพาะตัวอักษรภาษาไทยเท่านั้นค่ะ');
+                return;
+            }
+
             try {
                 const krathongRef = collection(db, "krathongs");
                 const qCheck = query(krathongRef, where("employeeId", "==", idInput));
                 const querySnapshot = await getDocs(qCheck);
 
                 if (!querySnapshot.empty) {
-                    alert('❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ตอน 17:20 น. ด้วยกันนะคะ!');
+                    alert('❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ด้วยกันนะคะ!');
                     return;
                 }
 
@@ -403,10 +441,11 @@
                     name: nameInput,
                     employeeId: idInput,
                     wish: wishInput,
-                    styleType: selectedKrathongStyle, // เก็บชื่อไฟล์ เช่น 'Doc.jpg'
+                    styleType: selectedKrathongStyle, 
                     timestamp: new Date().getTime()
                 });
 
+                document.getElementById('empName').value = '';
                 document.getElementById('empId').value = '';
                 document.getElementById('empWish').value = '';
                 toggleForm(false);
@@ -416,7 +455,6 @@
             }
         }
 
-        // 🌊 ระบบดึงข้อมูลและแสดงผลกระทงลอยผ่านน้ำแบบ Real-time บนหน้าจอ
         const qKrathong = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
         onSnapshot(qKrathong, (snapshot) => {
             participantsList = [];
@@ -433,7 +471,6 @@
             });
         });
 
-        // 📜 ฟังเสียงข้อมูลในฐานข้อมูลเพื่อดึงผลประวัติผู้โชคดี (History) มาแสดงชาร์ตใส
         const qLucky = query(collection(db, "lucky_winners"), orderBy("drawTime", "desc"));
         onSnapshot(qLucky, (snapshot) => {
             const historyList = document.getElementById('historyList');
@@ -451,7 +488,6 @@
             });
         });
 
-        // ⏰ ระบบนาฬิกาตั้งเวลาสุ่มของรางวัลอัตโนมัติประจำวัน (17:20 น.)
         async function checkLuckyDrawTime() {
             const now = new Date();
             const currentHour = now.getHours();
@@ -507,7 +543,6 @@
             }
         }
 
-        // 🌊 ฟังก์ชันการแสดงผลกระทงลอยน้ำโดยเปลี่ยนมาใช้แท็ก <img> ดึงรูปโดยตรง
         function renderKrathong(name, wish, styleType) {
             const river = document.getElementById('riverWater');
             const item = document.createElement('div');
@@ -516,19 +551,25 @@
             const randomTop = Math.random() * 65 + 15;
             item.style.top = randomTop + '%';
 
-            const speed = Math.random() * 15 + 28; 
+            // 🛠️ ปรับความเร็วการไหลของแม่น้ำให้อืดและช้าลงอย่างเห็นได้ชัด (เดิมอยู่ที่ 28s - 43s ปรับใหม่เป็น 50s - 75s)
+            const speed = Math.random() * 25 + 50; 
             item.style.setProperty('--flow-speed', speed + 's');
             item.style.setProperty('--wave-move', (Math.random() * 20 - 10) + 'px');
 
             const scaleValue = 0.45 + (randomTop / 140);
             item.style.transform = `scale(${scaleValue})`;
 
-            // หากไม่มีค่ารูปภาพส่งมา ให้ใช้ Employee.jpg เป็นภาพสำรองหลักเพื่อกันการ Error ของหน้าจอ
-            const imgFile = styleType || 'Employee.jpg';
-
+            let imgFile = styleType || 'Employee.jpg';
+            
+            // 🛠️ ปรับโครงสร้าง HTML ข้างในให้มี Wrapper เพื่อแสดงแท่งเทียนพร้อมประกายไฟสลัวลอยติดตัวรูปภาพไปด้วยกัน
             item.innerHTML = `
                 <div class="owner-tooltip">กระทงของ: คุณ${name}</div>
-                <img src="${imgFile}" class="krathong-visual" alt="กระทง">
+                <div class="krathong-wrapper">
+                    <div class="real-candle">
+                        <div class="real-flame"></div>
+                    </div>
+                    <img src="./${imgFile}" class="krathong-visual" alt="กระทง">
+                </div>
                 <div class="wish-text">${wish}</div>
             `;
 
