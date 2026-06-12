@@ -316,9 +316,9 @@
 <body>
 
     <div class="festival-container">
-        <!-- บอร์ดประวัติผู้โชคดี -->
+        <!-- รายชื่อผู้โชคดีงานลอยกระทง -->
         <div class="winner-history-panel">
-            <h3>🏆 ประวัติผู้โชคดีประจำวัน</h3>
+            <h3>🏆 รายชื่อผู้โชคดีงานลอยกระทง </h3>
             <ul class="history-list" id="historyList"></ul>
         </div>
 
@@ -337,7 +337,7 @@
             <div class="input-group">
                 <label>ชื่อพนักงาน (ภาษาไทยเท่านั้น)</label>
                 <!-- 🛠️ ตรวจสอบแบบ Realtime ให้กรอกได้เฉพาะภาษาไทยและเว้นวรรคเท่านั้น -->
-                <input type="text" id="empName" placeholder="ระบุชื่อภาษาไทย..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
+                <input type="text" id="empName" placeholder="ระบุชื่อ-นามสกุล ภาษาไทย..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
             </div>
             
             <div class="input-group">
@@ -347,22 +347,22 @@
             </div>
             
             <div class="input-group">
-                <label>คำอธิษฐานขอพร (กรอกตัวเลข ตัวอักษร หรืออักขระพิเศษได้อิสระ)</label>
+                <label>คำอธิษฐานขอพร</label>
                 <!-- 🛠️ ช่องคำอธิษฐานพิมพ์ตัวเลข สัญลักษณ์ ภาษาอังกฤษ หรือภาษาไทยได้ครบเต็มที่ -->
                 <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งานปัง ยอดขายทะลุเป้า ร่ำรวย..." required maxlength="70"></textarea>
             </div>
             
             <label style="color: #ffeedd; display: block; text-align: left; font-size: 13px;">เลือกรูปแบบกระทง</label>
             <div class="krathong-selector">
-                <div class="select-option active" onclick="selectStyle('Employee.jpg', this)">
+                <div class="select-option active" onclick="selectStyle('Employee.png', this)">
                     <img src="./Employee.jpg" alt="คนสู้ชีวิต">
                     <p>คนสู้ชีวิต</p>
                 </div>
-                <div class="select-option" onclick="selectStyle('Doc.jpg', this)">
+                <div class="select-option" onclick="selectStyle('Doc.png', this)">
                     <img src="./Doc.jpg" alt="กองเอกสาร">
                     <p>กองเอกสาร</p>
                 </div>
-                <div class="select-option" onclick="selectStyle('Pink.jpg', this)">
+                <div class="select-option" onclick="selectStyle('Pink.png', this)">
                     <img src="./Pink.jpg" alt="บัวชมพู">
                     <p>บัวชมพู</p>
                 </div>
