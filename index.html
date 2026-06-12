@@ -298,4 +298,276 @@
                 top: 50%;
                 transform: translate(-50%, -50%); 
             }
-            .form-panel h2 { font-size: 18px; margin
+            .form-panel h2 { font-size: 18px; margin-bottom: 10px; }
+            .input-group { margin-bottom: 8px; }
+            .input-group input, .input-group textarea { padding: 9px; font-size: 13px; }
+            .krathong-selector { margin: 8px 0 12px 0; gap: 4px; }
+            .select-option { padding: 4px 0; }
+            .select-option img { width: 35px; height: 32px; }
+            .select-option p { font-size: 9.5px; }
+            .btn-submit { padding: 11px; font-size: 15px; }
+            .river { height: 45%; }
+            .krathong-visual { width: 75px; max-height: 65px; }
+            .real-candle { bottom: 48px; height: 22px; width: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="festival-container">
+        <div class="winner-history-panel">
+            <h3>🏆 ประวัติผู้โชคดีประจำวัน</h3>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+
+        <div class="winner-popup" id="winnerAlert">
+            <h2>🎉 ยินดีด้วยกับผู้โชคดีประจำวัน 🎉</h2>
+            <p id="winnerNameDisplay">กำลังสุ่มหาผู้โชคดี...</p>
+        </div>
+
+        <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
+
+        <div class="form-panel" id="inputForm">
+            <h2>🪷 ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷</h2>
+            
+            <div class="input-group">
+                <label>ชื่อพนักงาน (ภาษาไทยเท่านั้น)</label>
+                <input type="text" id="empName" placeholder="ระบุชื่อภาษาไทย..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
+            </div>
+            
+            <div class="input-group">
+                <label>รหัสพนักงาน 7 หลัก (ตัวเลขเท่านั้น)</label>
+                <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน 7 หลัก..." required maxlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            
+            <div class="input-group">
+                <label>คำอธิษฐานขอพร (กรอกได้อิสระ)</label>
+                <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งานปัง ยอดขายทะลุเป้า ร่ำรวย..." required maxlength="70"></textarea>
+            </div>
+            
+            <label style="color: #ffeedd; display: block; text-align: left; font-size: 13px;">เลือกรูปแบบกระทง</label>
+            <div class="krathong-selector">
+                <div class="select-option active" onclick="selectStyle('Employee.jpg', this)">
+                    <img src="./Employee.jpg" alt="คนสู้ชีวิต">
+                    <p>คนสู้ชีวิต</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('Doc.jpg', this)">
+                    <img src="./Doc.jpg" alt="กองเอกสาร">
+                    <p>กองเอกสาร</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('Pink.jpg', this)">
+                    <img src="./Pink.jpg" alt="บัวชมพู">
+                    <p>บัวชมพู</p>
+                </div>
+                <div class="select-option" onclick="selectStyle('Green.png', this)">
+                    <img src="./Green.png" alt="ใบตองเขียว">
+                    <p>ใบตองเขียว</p>
+                </div>
+            </div>
+
+            <button class="btn-submit" onclick="launchKrathong()">ปล่อยกระทงลงแม่น้ำ ✨</button>
+        </div>
+
+        <div class="river" id="riverWater"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        // คอนฟิกหลักของระบบ Firebase ที่ได้รับการตรวจสอบแล้ว
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
+            authDomain: "loikatong.firebaseapp.com",
+            projectId: "loikatong",
+            storageBucket: "loikatong.firebasestorage.app",
+            messagingSenderId: "444623044937",
+            appId: "1:444623044937:web:270338a9de2bb36c1fda98",
+            measurementId: "G-CGR2MG02E8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+
+        let participantsList = []; 
+
+        let selectedKrathongStyle = 'Employee.jpg'; 
+        window.selectStyle = function(styleName, element) {
+            selectedKrathongStyle = styleName;
+            document.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        window.launchKrathong = async function() {
+            const nameInput = document.getElementById('empName').value.trim();
+            const idInput = document.getElementById('empId').value.trim();
+            const wishInput = document.getElementById('empWish').value.trim();
+
+            if(!nameInput || !idInput || !wishInput) {
+                alert('กรุณากรอกข้อมูล ชื่อ รหัสพนักงาน และคำอธิษฐานให้ครบถ้วนนะคะ 😊');
+                return;
+            }
+
+            if(idInput.length !== 7) {
+                alert('❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดีค่ะ รบกวนตรวจสอบอีกครั้งนะคะ');
+                return;
+            }
+
+            const thaiRegex = /^[ก-๙\s]+$/;
+            if(!thaiRegex.test(nameInput)) {
+                alert('❌ ช่องชื่อพนักงานกรอกได้เฉพาะตัวอักษรภาษาไทยเท่านั้นค่ะ');
+                return;
+            }
+
+            try {
+                const krathongRef = collection(db, "krathongs");
+                const qCheck = query(krathongRef, where("employeeId", "==", idInput));
+                const querySnapshot = await getDocs(qCheck);
+
+                if (!querySnapshot.empty) {
+                    alert('❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ด้วยกันนะคะ!');
+                    return;
+                }
+
+                await addDoc(collection(db, "krathongs"), {
+                    name: nameInput,
+                    employeeId: idInput,
+                    wish: wishInput,
+                    styleType: selectedKrathongStyle, 
+                    timestamp: new Date().getTime()
+                });
+
+                document.getElementById('empName').value = '';
+                document.getElementById('empId').value = '';
+                document.getElementById('empWish').value = '';
+                toggleForm(false);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                alert("ระบบเชื่อมต่อขัดข้องชั่วคราว กรุณาลองใหม่อีกครั้งค่ะ");
+            }
+        }
+
+        const qKrathong = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
+        onSnapshot(qKrathong, (snapshot) => {
+            participantsList = [];
+            snapshot.docs.forEach((doc) => {
+                const data = doc.data();
+                participantsList.push(data.name); 
+            });
+            
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const data = change.doc.data();
+                    renderKrathong(data.name, data.wish, data.styleType);
+                }
+            });
+        });
+
+        const qLucky = query(collection(db, "lucky_winners"), orderBy("drawTime", "desc"));
+        onSnapshot(qLucky, (snapshot) => {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            snapshot.docs.forEach((doc) => {
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <span class="history-date">${data.dateStr}</span>
+                    <span class="history-name">คุณ ${data.winnerName}</span>
+                `;
+                historyList.appendChild(li);
+            });
+        });
+
+        async function checkLuckyDrawTime() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const dateStr = now.toLocaleDateString('th-TH', {day: '2-digit', month: '2-digit', year: 'numeric'});
+
+            if (currentHour === 17 && currentMinute >= 20 && currentMinute < 25) {
+                const luckyRef = collection(db, "lucky_winners");
+                const snapshot = await getDocs(luckyRef);
+                let todayWinner = null;
+                
+                snapshot.forEach(doc => {
+                    if(doc.data().dateStr === dateStr) {
+                        todayWinner = doc.data().winnerName;
+                    }
+                });
+
+                if (!todayWinner && participantsList.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * participantsList.length);
+                    const luckyName = participantsList[randomIndex];
+                    
+                    await addDoc(collection(db, "lucky_winners"), {
+                        winnerName: luckyName,
+                        dateStr: dateStr,
+                        drawTime: now.getTime()
+                    });
+                    todayWinner = luckyName;
+                }
+
+                if (todayWinner) {
+                    document.getElementById('winnerNameDisplay').innerText = `คุณ ${todayWinner} 🏆`;
+                    document.getElementById('winnerAlert').classList.add('show');
+                }
+            } else {
+                document.getElementById('winnerAlert').classList.remove('show');
+            }
+        }
+
+        setInterval(checkLuckyDrawTime, 10000);
+        checkLuckyDrawTime();
+    </script>
+
+    <script>
+        function toggleForm(show) {
+            const form = document.getElementById('inputForm');
+            const reopenBtn = document.getElementById('reopenBtn');
+            if (show) {
+                form.style.display = 'block';
+                reopenBtn.style.display = 'none';
+            } else {
+                form.style.display = 'none';
+                reopenBtn.style.display = 'block';
+            }
+        }
+
+        function renderKrathong(name, wish, styleType) {
+            const river = document.getElementById('riverWater');
+            const item = document.createElement('div');
+            item.className = 'krathong-item';
+
+            const randomTop = Math.random() * 65 + 15;
+            item.style.top = randomTop + '%';
+
+            // ลอยช้าๆ ชิลๆ (50s - 75s)
+            const speed = Math.random() * 25 + 50; 
+            item.style.setProperty('--flow-speed', speed + 's');
+            item.style.setProperty('--wave-move', (Math.random() * 20 - 10) + 'px');
+
+            const scaleValue = 0.45 + (randomTop / 140);
+            item.style.transform = `scale(${scaleValue})`;
+
+            let imgFile = styleType || 'Employee.jpg';
+            
+            item.innerHTML = `
+                <div class="owner-tooltip">กระทงของ: คุณ${name}</div>
+                <div class="krathong-wrapper">
+                    <div class="real-candle">
+                        <div class="real-flame"></div>
+                    </div>
+                    <img src="./${imgFile}" class="krathong-visual" alt="กระทง">
+                </div>
+                <div class="wish-text">${wish}</div>
+            `;
+
+            river.appendChild(item);
+        }
+    </script>
+</body>
+</html>
