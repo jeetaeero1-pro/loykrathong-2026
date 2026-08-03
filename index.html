@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷✨</title>
+    <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -78,7 +78,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 52%;
+            height: 35%;
             z-index: 10;
             overflow: hidden;
             background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(3, 105, 161, 0.25) 40%, rgba(2, 132, 199, 0.35) 100%);
@@ -379,7 +379,7 @@
             
             <div class="input-group">
                 <label>ชื่อพนักงาน (ภาษาไทยเท่านั้น)</label>
-                <input type="text" id="empName" placeholder="เช่น คุณสมชาย บัญชีบริหาร..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
+                <input type="text" id="empName" placeholder="เช่น คุณเงินตรา บัญชีทรัพย์สิน..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
             </div>
             
             <div class="input-group">
@@ -388,13 +388,13 @@
             </div>
             
             <div class="input-group">
-                <label>คำอธิษฐานขอพร (กรอกได้อิสระ)</label>
+                <label>คำอธิษฐานขอพร 🙏</label>
                 <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งบดุลลงตัวเป๊ะ เดบิตเครดิตเท่ากัน โบนัสปังๆ..." required maxlength="75"></textarea>
                 <!-- Quick Wish Chips for Accountants -->
                 <div class="flex flex-wrap gap-1 mt-1.5">
                     <button type="button" onclick="setQuickWish('ขอให้งบดุลลงตัวเป๊ะ เดบิต = เครดิต สาธุ! 🙏')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">⚖️ งบดุลลงตัว</button>
                     <button type="button" onclick="setQuickWish('ขออย่าให้เจอ Diff 0.01 บาทตอนปิดงบตี 2 💸')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">💸 ไม่เจอ Diff</button>
-                    <button type="button" onclick="setQuickWish('ขอให้สรรพากรปรานี ปิดปีนี้โบนัสจัดเต็ม! 🎁')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">🎁 โบนัสปัง</button>
+                    <button type="button" onclick="setQuickWish('ขอให้เจ้านายปรานี ปิดปีนี้โบนัสจัดเต็ม! 🎁')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">🎁 โบนัสปัง</button>
                 </div>
             </div>
 
@@ -472,7 +472,7 @@
             }
 
             if(idInput.length !== 7) {
-                showCustomModal('รหัสพนักงานไม่ถูกต้อง', '❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดีค่ะ รบกวนตรวจสอบอีกครั้งนะคะ');
+                showCustomModal('รหัสพนักงานไม่ถูกต้อง', '❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดี รบกวนตรวจสอบอีกครั้งนะคะ');
                 return;
             }
 
