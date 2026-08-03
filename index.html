@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷✨</title>
+    <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -78,7 +78,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 52%;
+            height: 40%;
             z-index: 10;
             overflow: hidden;
             background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(3, 105, 161, 0.25) 40%, rgba(2, 132, 199, 0.35) 100%);
@@ -366,13 +366,6 @@
         <!-- 🎵 YouTube Hidden Player Container -->
         <div id="ytplayer" class="absolute pointer-events-none opacity-0 w-1 h-1 overflow-hidden" style="top: -9999px; left: -9999px;"></div>
 
-        <!-- 🎵 Controls Top Right -->
-        <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
-            <button id="soundBtn" onclick="toggleAudio()" class="bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1.5 transition shadow-lg">
-                <span>🎵</span> <span id="soundTxt">เปิดเพลงบรรยากาศ</span>
-            </button>
-        </div>
-
         <!-- เพิ่มส่วนนี้เพื่อโหลดไฟล์เพลง -->
         <audio id="bgmAudio" loop>
             <source src="bgm.mp3" type="audio/mpeg">
@@ -593,69 +586,39 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // 🎵 แก้ไขส่วนควบคุมเสียงให้เล่นไฟล์ bgm.mp3
+        // 🎵 ระบบเล่นเพลงบรรยากาศแบบค่อยๆ ดังขึ้น (Fade-in)
         const bgm = document.getElementById('bgmAudio');
-        const soundTxt = document.getElementById('soundTxt');
 
-        function toggleAudio() {
-            if (bgm.paused) {
-                bgm.play().then(() => {
-                    soundTxt.innerText = 'ปิดเพลงบรรยากาศ';
-                }).catch(e => console.log("Autoplay prevented:", e));
-            } else {
-                bgm.pause();
-                soundTxt.innerText = 'เปิดเพลงบรรยากาศ';
-            }
-        }
-
-        // เพิ่มการฟังเหตุการณ์คลิกครั้งแรกเพื่อเริ่มเล่นเสียง (แก้ปัญหา Autoplay Policy)
-        document.body.addEventListener('click', function() {
-            if (bgm.paused) {
-                bgm.play().catch(() => {});
-                soundTxt.innerText = 'ปิดเพลงบรรยากาศ';
-            }
-        }, { once: true });
-
-        let ytPlayer = null;
-        let isMusicPlaying = false;
-
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('ytplayer', {
-                height: '1',
-                width: '1',
-                videoId: 'X80o4uXSkOs',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'X80o4uXSkOs',
-                    'playsinline': 1
-                },
-                events: {
-                    'onStateChange': function(event) {
-                        if (event.data === YT.PlayerState.ENDED) {
-                            ytPlayer.playVideo(); // Enforce continuous playback on loop
+        function playBgmWithFadeIn(durationMs = 3500) {
+            if (!bgm) return;
+            bgm.volume = 0;
+            const playPromise = bgm.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    let startTime = null;
+                    function fadeStep(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        const elapsed = timestamp - startTime;
+                        const progress = Math.min(elapsed / durationMs, 1);
+                        
+                        bgm.volume = progress;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(fadeStep);
                         }
                     }
-                }
-            });
-        }
-
-        function toggleAudio() {
-            const btnTxt = document.getElementById('soundTxt');
-            if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
-
-            const state = ytPlayer.getPlayerState();
-            if (state === YT.PlayerState.PLAYING) {
-                ytPlayer.pauseVideo();
-                isMusicPlaying = false;
-                btnTxt.innerText = 'เปิดเพลงบรรยากาศ';
-            } else {
-                ytPlayer.playVideo();
-                isMusicPlaying = true;
-                btnTxt.innerText = 'ปิดเพลงบรรยากาศ';
+                    requestAnimationFrame(fadeStep);
+                }).catch(e => console.log("Autoplay blocked or prevented:", e));
             }
         }
+
+        // เพิ่มการฟังเหตุการณ์คลิกครั้งแรกเพื่อเริ่มเล่นเสียงแบบ Fade-In ค่อยๆ ดังขึ้น
+        document.body.addEventListener('click', function() {
+            if (bgm && bgm.paused) {
+                playBgmWithFadeIn(4000); // Fade in นาน 4 วินาทีเพื่อความละมุน
+            }
+        }, { once: true });
 
         function toggleForm(show) {
             const form = document.getElementById('inputForm');
