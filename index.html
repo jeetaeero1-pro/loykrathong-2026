@@ -6,8 +6,10 @@
     <title>ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Mitr:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -21,33 +23,161 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #050814;
+            background-color: #030712;
+            color: #ffffff;
         }
 
-        /* 📸 ส่วนจัดวางภาพพื้นหลัง */
+        /* 🌌 คืนวันเพ็ญ - Night Sky & River Backdrop */
         .festival-container {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
-            background-image: url('Gemini_Generated_Image_2ype4g2ype4g2ype.png');
-            background-size: cover;
-            background-position: center bottom;
-            background-repeat: no-repeat;
+            background: linear-gradient(to bottom, #020617 0%, #0b1329 40%, #0f172a 70%, #030712 100%);
+            overflow: hidden;
         }
 
+        /* 🌕 พระจันทร์เต็มดวงเรืองแสง */
+        .full-moon {
+            position: absolute;
+            top: 25px;
+            right: 12%;
+            width: 110px;
+            height: 110px;
+            background: radial-gradient(circle, #fffdf0 0%, #fef08a 60%, #facc15 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(254, 240, 138, 0.8), 0 0 100px rgba(250, 204, 21, 0.4);
+            z-index: 1;
+            pointer-events: none;
+        }
 
+        .full-moon::after {
+            content: '';
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            background: rgba(254, 240, 138, 0.15);
+            filter: blur(10px);
+        }
 
-        /* 🌊 โซนแม่น้ำสำหรับรองรับกระทงลอย */
+        /* ☁️ เมฆและวัดไทยจำลองด้านหลัง */
+        .sky-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 📜 บอร์ดประวัติผู้โชคดี (History Panel) */
+        .winner-history-panel {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 80;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+            border-radius: 14px;
+            padding: 12px;
+            width: 230px;
+            max-height: 170px;
+            overflow-y: auto;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        .winner-history-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        .winner-history-panel::-webkit-scrollbar-thumb {
+            background: rgba(234, 179, 8, 0.5);
+            border-radius: 4px;
+        }
+
+        .winner-history-panel h3 {
+            color: #facc15;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .history-list {
+            list-style: none;
+            font-size: 11.5px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.08);
+        }
+
+        .history-date { color: #94a3b8; font-size: 10px; }
+        .history-name { color: #4ade80; font-weight: 600; text-align: right; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* 🏆 Pop-Up ประกาศผู้โชคดี */
+        .winner-popup {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-180%);
+            z-index: 200;
+            background: linear-gradient(135deg, #b45309, #fef08a, #d97706, #fef9c3);
+            border: 2px solid #ffffff;
+            padding: 12px 28px;
+            border-radius: 30px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7), 0 0 30px rgba(234, 179, 8, 0.6);
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            width: 90%;
+            max-width: 460px;
+        }
+
+        .winner-popup.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .winner-popup h2 { color: #1e1b4b; font-size: 15px; font-weight: 800; }
+        .winner-popup p { color: #7f1d1d; font-size: 19px; font-weight: 800; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+
+        /* 🌊 โซนแม่น้ำสำหรับลอยกระทง */
         .river {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 50%;
-            z-index: 2;
+            height: 52%;
+            z-index: 10;
             overflow: hidden;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4) 0%, rgba(3, 105, 161, 0.25) 40%, rgba(2, 132, 199, 0.35) 100%);
+        }
+
+        /* ประกายคลื่นน้ำ shimmering waves */
+        .water-wave {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+            animation: waveMove 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-20%) translateY(-8px); }
         }
 
         /* 🪷 ตัวกระทงและการลอยต่อเนื่อง */
@@ -59,12 +189,18 @@
             flex-direction: column;
             align-items: center;
             user-select: none;
-            z-index: 3;
+            z-index: 20;
+            transition: filter 0.2s ease;
+        }
+
+        .krathong-item:hover {
+            filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.9));
+            z-index: 50 !important;
         }
 
         @keyframes riverFlow {
             0% { transform: translateX(-220px) translateY(0); }
-            50% { transform: translateX(calc(50vw)) translateY(var(--wave-move)); }
+            50% { transform: translateX(50vw) translateY(var(--wave-move)); }
             100% { transform: translateX(calc(100vw + 220px)) translateY(0); }
         }
 
@@ -74,59 +210,66 @@
             flex-direction: column;
             align-items: center;
         }
+
+        /* 🕯️ เปลวไฟเทียนและประกายแสงวิบวับ */
+        .real-flame {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 18px;
+            background: radial-gradient(circle at bottom, #ffffff 15%, #fbbf24 45%, rgba(239, 68, 68, 0) 80%);
+            border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+            animation: flameGlow 0.7s ease-in-out infinite alternate;
+            box-shadow: 0 0 15px #f59e0b, 0 0 30px #ef4444;
+            z-index: 15;
         }
 
         @keyframes flameGlow {
-            0% { transform: translateX(-50%) scale(0.9) rotate(-2deg); opacity: 0.85; }
-            100% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 1; box-shadow: 0 0 22px #ffaa00, 0 0 35px #ff5500; }
-        }
-
-        /* 🖼️ รูปภาพกระทงหลัก */
-        .krathong-visual {
-            width: 100px;
-            height: auto;
-            max-height: 85px;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
-            z-index: 3;
+            0% { transform: translateX(-50%) scale(0.88) rotate(-3deg); opacity: 0.85; }
+            100% { transform: translateX(-50%) scale(1.12) rotate(3deg); opacity: 1; box-shadow: 0 0 22px #fbbf24, 0 0 38px #f97316; }
         }
 
         /* 📜 ป้ายคำอธิษฐานเหนือน้ำ */
         .wish-text {
-            color: #fffbe0;
-            font-size: 13px;
-            font-weight: 600;
-            background: rgba(7, 14, 29, 0.9);
-            padding: 5px 12px;
-            border-radius: 14px;
-            margin-top: 6px;
+            color: #fefef0;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(15, 23, 42, 0.88);
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
             text-align: center;
-            border: 1px solid #f1c40f;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            border: 1px solid rgba(250, 204, 21, 0.8);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             white-space: normal;
             width: max-content;
-            max-width: 180px;
+            max-width: 170px;
             word-wrap: break-word;
-            z-index: 5;
+            z-index: 25;
+            backdrop-filter: blur(4px);
         }
 
         /* 👤 กล่องชื่อพนักงานเมื่อชี้/สัมผัส */
         .owner-tooltip {
             position: absolute;
-            bottom: 115%;
-            background: linear-gradient(135deg, #00843D, #F7931E);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
+            bottom: 110%;
+            background: linear-gradient(135deg, #15803d, #d97706);
+            color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 700;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 100;
+            pointer-events: none;
         }
+
         .krathong-item:hover .owner-tooltip, .krathong-item:active .owner-tooltip {
             opacity: 1;
             visibility: visible;
@@ -138,73 +281,258 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(11, 19, 43, 0.95);
-            border: 2px solid #00843D;
-            padding: 25px;
-            border-radius: 18px;
-            width: 90%;
-            max-width: 440px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.7), 0 0 20px rgba(0, 132, 61, 0.2);
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.94);
+            border: 2px solid #16a34a;
+            padding: 22px 24px;
+            border-radius: 20px;
+            width: 92%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(22, 163, 74, 0.25);
+            z-index: 120;
+            backdrop-filter: blur(12px);
             text-align: center;
             transition: all 0.3s ease;
         }
-        .form-panel h2 { color: #f1c40f; margin-bottom: 15px; font-size: 20px; font-weight: 700; }
-        .input-group { margin-bottom: 12px; text-align: left; }
-        .input-group label { color: #ffeedd; display: block; margin-bottom: 5px; font-size: 13px; }
+
+        .form-panel h2 { color: #facc15; margin-bottom: 14px; font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+        .input-group { margin-bottom: 11px; text-align: left; }
+        .input-group label { color: #fef08a; display: block; margin-bottom: 4px; font-size: 12.5px; font-weight: 500; }
         .input-group input, .input-group textarea {
-            width: 100%; padding: 11px; background: rgba(255,255,255,0.08);
-            border: 1px solid #556781; border-radius: 8px; color: #fff; font-size: 14px; outline: none;
+            width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.08);
+            border: 1px solid #475569; border-radius: 10px; color: #fff; font-size: 13.5px; outline: none;
+            transition: border 0.2s, background 0.2s;
         }
-        .input-group input:focus, .input-group textarea:focus { border-color: #00843D; background: rgba(255,255,255,0.12); }
+        .input-group input:focus, .input-group textarea:focus { border-color: #22c55e; background: rgba(255,255,255,0.12); }
         
-       
+        /* 🎨 เมนูเลือกรูปแบบกระทง */
+        .krathong-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin: 10px 0 16px 0;
+            gap: 6px;
+        }
+
+        .select-option {
+            background: rgba(255,255,255,0.04);
+            border: 2px solid #475569;
+            border-radius: 12px;
+            padding: 6px 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .select-option svg, .select-option img { width: 44px; height: 42px; object-fit: contain; }
+        .select-option p { color: #cbd5e1; font-size: 10.5px; font-weight: 500; white-space: nowrap; }
+        .select-option.active {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        .select-option.active p { color: #fbbf24; font-weight: 700; }
+
+        .btn-submit {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #16a34a, #ea580c);
+            border: none; border-radius: 10px; color: white; font-size: 15.5px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.4); transition: transform 0.15s, filter 0.15s;
+        }
+        .btn-submit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-submit:active { transform: translateY(1px); }
+
+        .btn-reopen {
+            position: absolute; bottom: 20px; right: 20px;
+            background: linear-gradient(135deg, #16a34a, #f97316);
+            color: #fff; border: none; padding: 11px 22px; font-weight: 700;
+            border-radius: 30px; font-size: 13.5px; z-index: 70; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 15px rgba(22, 163, 74, 0.4); display: none;
+            transition: all 0.2s ease;
+        }
+        .btn-reopen:hover { transform: scale(1.05); }
+
+        /* 🎈 โคมลอย (Sky Lanterns) */
+        .sky-lantern {
+            position: absolute;
+            width: 22px;
+            height: 30px;
+            background: radial-gradient(circle at center, #fef08a 20%, #f59e0b 70%, #d97706 100%);
+            border-radius: 6px 6px 4px 4px;
+            opacity: 0.85;
+            box-shadow: 0 0 15px #fef08a, 0 0 25px #f59e0b;
+            animation: floatUp var(--lantern-speed) ease-in infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) translateX(0) scale(0.6); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) translateX(var(--drift)) scale(1.1); opacity: 0; }
+        }
+
         /* 📱 จัดหน้าจอมือถือ */
         @media (max-width: 600px) {
-            .winner-history-panel { top: 20px; left: 15px; width: 180px; max-height: 120px; padding: 8px; }
+            .winner-history-panel { top: 12px; left: 12px; width: 175px; max-height: 130px; padding: 8px; }
             .winner-history-panel h3 { font-size: 11px; margin-bottom: 4px; }
             .history-list { font-size: 10px; }
-            .winner-popup { padding: 8px 15px; top: 10px; max-width: 90%; }
+            .winner-popup { padding: 10px 16px; top: 10px; max-width: 92%; }
             .winner-popup h2 { font-size: 13px; }
             .winner-popup p { font-size: 15px; }
-            .form-panel {
-                width: 94%;
-                padding: 16px;
-                top: 50%;
-                transform: translate(-50%, -50%); 
-            }
-            .form-panel h2 { font-size: 18px; margin-bottom: 10px; }
-            .input-group { margin-bottom: 8px; }
-            .input-group input, .input-group textarea { padding: 9px; font-size: 13px; }
-            .krathong-selector { margin: 8px 0 12px 0; gap: 4px; }
-            .select-option { padding: 4px 0; }
-            .select-option img { width: 35px; height: 32px; }
-            .select-option p { font-size: 9.5px; }
-            .btn-submit { padding: 11px; font-size: 15px; }
-            .river { height: 45%; }
-            .krathong-visual { width: 75px; max-height: 65px; }
-            .real-candle { bottom: 48px; height: 22px; width: 5px; }
+            .form-panel { width: 94%; padding: 16px; }
+            .form-panel h2 { font-size: 17px; margin-bottom: 8px; }
+            .input-group { margin-bottom: 7px; }
+            .input-group input, .input-group textarea { padding: 8px; font-size: 12.5px; }
+            .krathong-selector { margin: 6px 0 10px 0; gap: 4px; }
+            .select-option { padding: 4px 1px; }
+            .select-option svg { width: 34px; height: 32px; }
+            .select-option p { font-size: 9px; }
+            .btn-submit { padding: 10px; font-size: 14px; }
+            .river { height: 48%; }
+            .wish-text { font-size: 10.5px; max-width: 130px; padding: 3px 7px; }
+            .btn-reopen { bottom: 15px; right: 15px; padding: 9px 16px; font-size: 12px; }
+        }
+
+        /* Custom Modal for Krathong Details & Notifications */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(6px);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 24px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            transform: scale(0.9);
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
         }
     </style>
-                <div class="select-option" onclick="selectStyle('Green.png', this)">
-                    <img src="./Green.png" alt="ใบตองเขียว">
-                    <p>ใบตองเขียว</p>
+</head>
+<body>
+
+    <div class="festival-container">
+        <!-- 🌕 พระจันทร์เต็มดวง -->
+        <div class="full-moon"></div>
+
+        <!-- ☁️ ท้องฟ้าและโคมลอย -->
+        <div class="sky-bg" id="skyBg"></div>
+
+        <!-- 📜 บอร์ดประวัติผู้โชคดี -->
+        <div class="winner-history-panel">
+            <h3>🏆 ประวัติผู้โชคดีประจำวัน</h3>
+            <ul class="history-list" id="historyList">
+                <li class="history-item"><span class="history-date">วันนี้ 17:20</span> <span class="history-name">คุณมินต์ บัญชี</span></li>
+            </ul>
+        </div>
+
+        <!-- 🏆 Pop-Up ประกาศผู้โชคดีด้านบนจอกลาง -->
+        <div class="winner-popup" id="winnerAlert">
+            <h2>🎉 ยินดีด้วยกับผู้โชคดีประจำวัน 🎉</h2>
+            <p id="winnerNameDisplay">กำลังสุ่มหาผู้โชคดี...</p>
+        </div>
+
+        <!-- 🎵 Controls Top Right -->
+        <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
+            <button id="soundBtn" onclick="toggleAudio()" class="bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1.5 transition">
+                <span>🔊</span> <span id="soundTxt">เปิดเสียงสวดมนต์/บรรยากาศ</span>
+            </button>
+            <button onclick="releaseSkyLantern()" class="bg-amber-600/80 hover:bg-amber-500 text-white border border-amber-400/40 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1 transition shadow-lg">
+                <span>🎈</span> ปล่อยโคมลอย
+            </button>
+        </div>
+
+        <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
+
+        <!-- 📋 กล่องกรอกข้อมูลลอยอยู่ตรงกลางจอ -->
+        <div class="form-panel" id="inputForm">
+            <h2>🪷 ลอยกระทงออนไลน์สายงานบัญชีและการเงิน 🪷</h2>
+            
+            <div class="input-group">
+                <label>ชื่อพนักงาน (ภาษาไทยเท่านั้น)</label>
+                <input type="text" id="empName" placeholder="เช่น คุณสมชาย บัญชีบริหาร..." required maxlength="30" oninput="this.value = this.value.replace(/[^ก-๙\s]/g, '')">
+            </div>
+            
+            <div class="input-group">
+                <label>รหัสพนักงาน 7 หลัก (ตัวเลขเท่านั้น)</label>
+                <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน 7 หลัก เช่น 6500123..." required maxlength="7" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            
+            <div class="input-group">
+                <label>คำอธิษฐานขอพร (กรอกได้อิสระ)</label>
+                <textarea id="empWish" rows="2" placeholder="ขอให้ปีนี้งบดุลลงตัวเป๊ะ เดบิตเครดิตเท่ากัน โบนัสปังๆ..." required maxlength="75"></textarea>
+                <!-- Quick Wish Chips for Accountants -->
+                <div class="flex flex-wrap gap-1 mt-1.5">
+                    <button type="button" onclick="setQuickWish('ขอให้งบดุลลงตัวเป๊ะ เดบิต = เครดิต สาธุ! 🙏')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">⚖️ งบดุลลงตัว</button>
+                    <button type="button" onclick="setQuickWish('ขออย่าให้เจอ Diff 0.01 บาทตอนปิดงบตี 2 💸')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">💸 ไม่เจอ Diff</button>
+                    <button type="button" onclick="setQuickWish('ขอให้สรรพากรปรานี ปิดปีนี้โบนัสจัดเต็ม! 🎁')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-amber-200 px-2 py-0.5 rounded-full border border-amber-500/20">🎁 โบนัสปัง</button>
                 </div>
             </div>
 
-            <button class="btn-submit" onclick="launchKrathong()">ปล่อยกระทงลงแม่น้ำ ✨</button>
+            <button class="btn-submit mt-3" onclick="launchKrathong()">ปล่อยกระทงลงแม่น้ำ ✨</button>
         </div>
 
-        <div class="river" id="riverWater"></div>
+        <!-- 🌊 โซนแม่น้ำ -->
+        <div class="river" id="riverWater">
+            <div class="water-wave"></div>
+        </div>
+    </div>
+
+    <!-- 🪟 Interactive Modal for Krathong Wish Inspection -->
+    <div class="modal-overlay" id="wishModal">
+        <div class="modal-card">
+            <div id="modalKrathongSvg" class="w-24 h-24 mx-auto mb-2 flex items-center justify-center"></div>
+            <h3 id="modalOwnerName" class="text-amber-300 font-bold text-lg mb-1">คุณ...</h3>
+            <p id="modalEmpId" class="text-slate-400 text-xs mb-3">รหัสพนักงาน: 65****1</p>
+            
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-xl p-3.5 mb-4 text-amber-100 text-sm italic font-normal text-left relative">
+                <span class="text-amber-400 font-serif text-xl absolute -top-2 left-2">“</span>
+                <p id="modalWishText" class="px-3 py-1">คำอธิษฐาน...</p>
+                <span class="text-amber-400 font-serif text-xl absolute -bottom-3 right-2">”</span>
+            </div>
+
+            <div class="flex items-center justify-between gap-3">
+                <button onclick="sendLoveToKrathong()" class="flex-1 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg transition">
+                    <span>❤️</span> <span id="likeBtnTxt">ส่งกำลังใจ (0)</span>
+                </button>
+                <button onclick="closeModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2 px-4 rounded-xl text-xs transition">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, getDocs, where, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // คอนฟิกหลักของระบบ Firebase ที่ได้รับการตรวจสอบแล้ว
+        // คอนฟิกหลักของระบบ Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBbzu_Uzb_ea2A5d2ooneJcdTZWMaLomm4",
             authDomain: "loikatong.firebaseapp.com",
@@ -215,18 +543,22 @@
             measurementId: "G-CGR2MG02E8"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const analytics = getAnalytics(app);
+        let db = null;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch (err) {
+            console.log("Firebase initialized in fallback mode:", err);
+        }
 
         let participantsList = []; 
+        let selectedKrathongStyle = 'Green'; 
+        let activeModalKrathongId = null;
+        let localKrathongs = [];
 
-        let selectedKrathongStyle = 'Employee.jpg'; 
-        window.selectStyle = function(styleName, element) {
-            selectedKrathongStyle = styleName;
-            document.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('active'));
-            element.classList.add('active');
-        }
+        window.setQuickWish = function(text) {
+            document.getElementById('empWish').value = text;
+        };
 
         window.launchKrathong = async function() {
             const nameInput = document.getElementById('empName').value.trim();
@@ -234,37 +566,60 @@
             const wishInput = document.getElementById('empWish').value.trim();
 
             if(!nameInput || !idInput || !wishInput) {
-                alert('กรุณากรอกข้อมูล ชื่อ รหัสพนักงาน และคำอธิษฐานให้ครบถ้วนนะคะ 😊');
+                showCustomModal('กรอกข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อ รหัสพนักงาน 7 หลัก และคำอธิษฐานให้ครบถ้วนนะคะ 😊');
                 return;
             }
 
             if(idInput.length !== 7) {
-                alert('❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดีค่ะ รบกวนตรวจสอบอีกครั้งนะคะ');
+                showCustomModal('รหัสพนักงานไม่ถูกต้อง', '❌ รหัสพนักงานจะต้องมีความยาวเป็นตัวเลข 7 หลักพอดีค่ะ รบกวนตรวจสอบอีกครั้งนะคะ');
                 return;
             }
 
             const thaiRegex = /^[ก-๙\s]+$/;
             if(!thaiRegex.test(nameInput)) {
-                alert('❌ ช่องชื่อพนักงานกรอกได้เฉพาะตัวอักษรภาษาไทยเท่านั้นค่ะ');
+                showCustomModal('รูปแบบชื่อไม่ถูกต้อง', '❌ ช่องชื่อพนักงานกรอกได้เฉพาะตัวอักษรภาษาไทยเท่านั้นค่ะ');
                 return;
             }
 
             try {
-                const krathongRef = collection(db, "krathongs");
-                const qCheck = query(krathongRef, where("employeeId", "==", idInput));
-                const querySnapshot = await getDocs(qCheck);
+                if (db) {
+                    const krathongRef = collection(db, "krathongs");
+                    const qCheck = query(krathongRef, where("employeeId", "==", idInput));
+                    const querySnapshot = await getDocs(qCheck);
 
-                if (!querySnapshot.empty) {
-                    alert('❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ด้วยกันนะคะ!');
-                    return;
+                    if (!querySnapshot.empty) {
+                        showCustomModal('เคยลอยกระทงแล้ว', '❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ด้วยกันนะคะ!');
+                        return;
+                    }
+
+                    await addDoc(collection(db, "krathongs"), {
+                        name: nameInput,
+                        employeeId: idInput,
+                        wish: wishInput,
+                        styleType: 'Green', 
+                        likes: 0,
+                        timestamp: new Date().getTime()
+                    });
+                } else {
+                    // Fallback local addition
+                    const localItem = {
+                        id: 'local_' + Date.now(),
+                        name: nameInput,
+                        employeeId: idInput,
+                        wish: wishInput,
+                        styleType: 'Green',
+                        likes: 0,
+                        timestamp: Date.now()
+                    };
+                    renderKrathong(localItem);
+                    participantsList.push(nameInput);
                 }
 
-                await addDoc(collection(db, "krathongs"), {
-                    name: nameInput,
-                    employeeId: idInput,
-                    wish: wishInput,
-                    styleType: selectedKrathongStyle, 
-                    timestamp: new Date().getTime()
+                // Confetti Burst Effect
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
                 });
 
                 document.getElementById('empName').value = '';
@@ -273,42 +628,79 @@
                 toggleForm(false);
             } catch (e) {
                 console.error("Error adding document: ", e);
-                alert("ระบบเชื่อมต่อขัดข้องชั่วคราว กรุณาลองใหม่อีกครั้งค่ะ");
+                // Fallback rendering on error
+                renderKrathong({
+                    id: 'local_' + Date.now(),
+                    name: nameInput,
+                    employeeId: idInput,
+                    wish: wishInput,
+                    styleType: 'Green',
+                    likes: 0
+                });
+                toggleForm(false);
             }
+        };
+
+        // Initialize Realtime Sync from Firestore
+        if (db) {
+            try {
+                const qKrathong = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
+                onSnapshot(qKrathong, (snapshot) => {
+                    participantsList = [];
+                    snapshot.docs.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        participantsList.push(data.name); 
+                    });
+                    
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            const data = change.doc.data();
+                            data.id = change.doc.id;
+                            renderKrathong(data);
+                        }
+                    });
+                }, (error) => {
+                    console.log("Firestore snapshot fallback:", error);
+                    loadDefaultAccountingKrathongs();
+                });
+
+                const qLucky = query(collection(db, "lucky_winners"), orderBy("drawTime", "desc"));
+                onSnapshot(qLucky, (snapshot) => {
+                    const historyList = document.getElementById('historyList');
+                    historyList.innerHTML = '';
+                    
+                    snapshot.docs.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const li = document.createElement('li');
+                        li.className = 'history-item';
+                        li.innerHTML = `
+                            <span class="history-date">${data.dateStr || 'วันนี้'}</span>
+                            <span class="history-name">คุณ ${data.winnerName}</span>
+                        `;
+                        historyList.appendChild(li);
+                    });
+                });
+            } catch (e) {
+                loadDefaultAccountingKrathongs();
+            }
+        } else {
+            loadDefaultAccountingKrathongs();
         }
 
-        const qKrathong = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
-        onSnapshot(qKrathong, (snapshot) => {
-            participantsList = [];
-            snapshot.docs.forEach((doc) => {
-                const data = doc.data();
-                participantsList.push(data.name); 
-            });
-            
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const data = change.doc.data();
-                    renderKrathong(data.name, data.wish, data.styleType);
-                }
-            });
-        });
+        // Pre-populate river with initial sample accounting team Krathongs if empty
+        function loadDefaultAccountingKrathongs() {
+            const defaultKrathongs = [
+                { id: 'def1', name: 'น้องมินต์ บัญชีบริหาร', employeeId: '6501001', wish: 'ขอให้ปิดงบเดือนนี้ราบรื่น ไม่มี Diff แม้แต่สลึงเดียว 🙏', styleType: 'Green', likes: 12 },
+                { id: 'def2', name: 'พี่ป้อม การเงิน', employeeId: '6200542', wish: 'ขอให้เงินโอนตรงเวลา ซัพพลายเออร์แฮปปี้ 💸', styleType: 'Green', likes: 8 },
+                { id: 'def3', name: 'คุณสมชาย Auditing', employeeId: '5900118', wish: 'ขอให้สุ่มตรวจเอกสารแล้วเจอแต่ความถูกต้อง สรรพากรผ่านฉลุย! ✨', styleType: 'Green', likes: 15 },
+                { id: 'def4', name: 'น้องเจน บัญชีต้นทุน', employeeId: '6602310', wish: 'เดบิต เครดิต เท่ากันทุกวัน สาธุโบนัส 8 เดือน! 🎁', styleType: 'Green', likes: 20 }
+            ];
 
-        const qLucky = query(collection(db, "lucky_winners"), orderBy("drawTime", "desc"));
-        onSnapshot(qLucky, (snapshot) => {
-            const historyList = document.getElementById('historyList');
-            historyList.innerHTML = '';
-            
-            snapshot.docs.forEach((doc) => {
-                const data = doc.data();
-                const li = document.createElement('li');
-                li.className = 'history-item';
-                li.innerHTML = `
-                    <span class="history-date">${data.dateStr}</span>
-                    <span class="history-name">คุณ ${data.winnerName}</span>
-                `;
-                historyList.appendChild(li);
+            defaultKrathongs.forEach(item => {
+                participantsList.push(item.name);
+                renderKrathong(item);
             });
-        });
+        }
 
         async function checkLuckyDrawTime() {
             const now = new Date();
@@ -316,27 +708,37 @@
             const currentMinute = now.getMinutes();
             const dateStr = now.toLocaleDateString('th-TH', {day: '2-digit', month: '2-digit', year: 'numeric'});
 
-            if (currentHour === 17 && currentMinute >= 20 && currentMinute < 25) {
-                const luckyRef = collection(db, "lucky_winners");
-                const snapshot = await getDocs(luckyRef);
+            // Lucky draw active check (or manually demoable)
+            if ((currentHour === 17 && currentMinute >= 20 && currentMinute < 25) || window.forceLuckyDraw) {
                 let todayWinner = null;
-                
-                snapshot.forEach(doc => {
-                    if(doc.data().dateStr === dateStr) {
-                        todayWinner = doc.data().winnerName;
-                    }
-                });
 
-                if (!todayWinner && participantsList.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * participantsList.length);
-                    const luckyName = participantsList[randomIndex];
-                    
-                    await addDoc(collection(db, "lucky_winners"), {
-                        winnerName: luckyName,
-                        dateStr: dateStr,
-                        drawTime: now.getTime()
-                    });
-                    todayWinner = luckyName;
+                if (db) {
+                    try {
+                        const luckyRef = collection(db, "lucky_winners");
+                        const snapshot = await getDocs(luckyRef);
+                        
+                        snapshot.forEach(docSnap => {
+                            if(docSnap.data().dateStr === dateStr) {
+                                todayWinner = docSnap.data().winnerName;
+                            }
+                        });
+
+                        if (!todayWinner && participantsList.length > 0) {
+                            const randomIndex = Math.floor(Math.random() * participantsList.length);
+                            const luckyName = participantsList[randomIndex];
+                            
+                            await addDoc(collection(db, "lucky_winners"), {
+                                winnerName: luckyName,
+                                dateStr: dateStr,
+                                drawTime: now.getTime()
+                            });
+                            todayWinner = luckyName;
+                        }
+                    } catch(e) {
+                        if (participantsList.length > 0) todayWinner = participantsList[0];
+                    }
+                } else if (participantsList.length > 0) {
+                    todayWinner = participantsList[Math.floor(Math.random() * participantsList.length)];
                 }
 
                 if (todayWinner) {
@@ -350,6 +752,9 @@
 
         setInterval(checkLuckyDrawTime, 10000);
         checkLuckyDrawTime();
+
+        // Attach global functions to window
+        window.renderKrathongData = renderKrathong;
     </script>
 
     <script>
@@ -365,36 +770,180 @@
             }
         }
 
-        function renderKrathong(name, wish, styleType) {
+        function renderKrathong(krathongData) {
+            const { id, name, wish, likes = 0, employeeId = '65*****' } = krathongData;
             const river = document.getElementById('riverWater');
+            if (!river) return;
+
             const item = document.createElement('div');
             item.className = 'krathong-item';
+            item.dataset.id = id || 'k_' + Math.random();
+            item.dataset.name = name;
+            item.dataset.wish = wish;
+            item.dataset.style = 'Green';
+            item.dataset.likes = likes;
+            item.dataset.empId = employeeId;
 
             const randomTop = Math.random() * 65 + 15;
             item.style.top = randomTop + '%';
 
-            // ลอยช้าๆ ชิลๆ (50s - 75s)
-            const speed = Math.random() * 25 + 50; 
+            // Floating speed across screen (45s - 75s)
+            const speed = Math.random() * 30 + 45; 
             item.style.setProperty('--flow-speed', speed + 's');
-            item.style.setProperty('--wave-move', (Math.random() * 20 - 10) + 'px');
+            item.style.setProperty('--wave-move', (Math.random() * 24 - 12) + 'px');
 
-            const scaleValue = 0.45 + (randomTop / 140);
+            // Perspective scaling (smaller near top, larger near bottom)
+            const scaleValue = 0.5 + (randomTop / 140);
             item.style.transform = `scale(${scaleValue})`;
 
-            let imgFile = styleType || 'Employee.jpg';
-            
             item.innerHTML = `
-                <div class="owner-tooltip">กระทงของ: คุณ${name}</div>
+                <div class="owner-tooltip">คุณ ${escapeHtml(name)}</div>
                 <div class="krathong-wrapper">
-                    <div class="real-candle">
-                        <div class="real-flame"></div>
-                    </div>
-                    <img src="./${imgFile}" class="krathong-visual" alt="กระทง">
+                    <div class="real-flame"></div>
+                    <img src="Green.png" alt="กระทงใบตองเขียว" class="w-24 h-20 object-contain drop-shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/100x90/14532d/ffffff?text=Green.png';">
                 </div>
-                <div class="wish-text">${wish}</div>
+                <div class="wish-text">${escapeHtml(wish)}</div>
             `;
 
+            // Click listener to inspect Krathong
+            item.onclick = function() {
+                openKrathongModal(item);
+            };
+
             river.appendChild(item);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // 🪟 Modal Inspection Handlers
+        let currentActiveItem = null;
+
+        function openKrathongModal(itemEl) {
+            currentActiveItem = itemEl;
+            const name = itemEl.dataset.name;
+            const wish = itemEl.dataset.wish;
+            const likes = parseInt(itemEl.dataset.likes || 0);
+            const empId = itemEl.dataset.empId || '65*****';
+
+            document.getElementById('modalOwnerName').innerText = `คุณ ${name}`;
+            document.getElementById('modalEmpId').innerText = `รหัสพนักงาน: ${maskEmpId(empId)}`;
+            document.getElementById('modalWishText').innerText = wish;
+            document.getElementById('likeBtnTxt').innerText = `ส่งกำลังใจ (${likes})`;
+
+            // Set Green.png image inside modal
+            document.getElementById('modalKrathongSvg').innerHTML = `<img src="Green.png" alt="กระทงใบตองเขียว" class="w-20 h-20 object-contain drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/100x90/14532d/ffffff?text=Green.png';">`;
+            document.getElementById('wishModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('wishModal').classList.remove('active');
+        }
+
+        function sendLoveToKrathong() {
+            if (!currentActiveItem) return;
+            let currentLikes = parseInt(currentActiveItem.dataset.likes || 0);
+            currentLikes++;
+            currentActiveItem.dataset.likes = currentLikes;
+            document.getElementById('likeBtnTxt').innerText = `ส่งกำลังใจ (${currentLikes})`;
+
+            // Floating heart animation
+            const heart = document.createElement('div');
+            heart.innerText = '❤️';
+            heart.className = 'fixed text-2xl z-[400] pointer-events-none transition-all duration-700 ease-out';
+            heart.style.left = (window.innerWidth / 2 + (Math.random() * 40 - 20)) + 'px';
+            heart.style.top = (window.innerHeight / 2) + 'px';
+            document.body.appendChild(heart);
+
+            requestAnimationFrame(() => {
+                heart.style.transform = 'translateY(-100px) scale(1.4)';
+                heart.style.opacity = '0';
+            });
+
+            setTimeout(() => heart.remove(), 700);
+        }
+
+        function maskEmpId(id) {
+            if (!id || id.length < 7) return '65****1';
+            return id.substring(0, 2) + '****' + id.substring(6);
+        }
+
+        function showCustomModal(title, message) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/80 backdrop-blur-sm z-[500] flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-sm text-center shadow-2xl">
+                    <h3 class="text-amber-400 font-bold text-lg mb-2">${escapeHtml(title)}</h3>
+                    <p class="text-slate-300 text-sm mb-5 leading-relaxed">${escapeHtml(message)}</p>
+                    <button onclick="this.closest('.fixed').remove()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 px-6 rounded-xl text-xs transition">
+                        ตกลง
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // 🎈 Sky Lanterns generator
+        function releaseSkyLantern() {
+            const sky = document.getElementById('skyBg');
+            const lantern = document.createElement('div');
+            lantern.className = 'sky-lantern';
+            lantern.style.left = (Math.random() * 90 + 5) + '%';
+            lantern.style.setProperty('--lantern-speed', (Math.random() * 10 + 12) + 's');
+            lantern.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+            sky.appendChild(lantern);
+
+            setTimeout(() => lantern.remove(), 22000);
+        }
+
+        // Auto release lanterns periodically
+        setInterval(releaseSkyLantern, 4000);
+        for(let i=0; i<5; i++) setTimeout(releaseSkyLantern, i * 800);
+
+        // 🎵 Ambient Thai Sound Synthesizer (Web Audio API - No external audio URLs needed!)
+        let audioCtx = null;
+        let isPlaying = false;
+        let ambientOsc = null;
+
+        function toggleAudio() {
+            const btnTxt = document.getElementById('soundTxt');
+            if (!isPlaying) {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                startAmbientSound();
+                isPlaying = true;
+                btnTxt.innerText = 'ปิดเสียงบรรยากาศ';
+            } else {
+                stopAmbientSound();
+                isPlaying = false;
+                btnTxt.innerText = 'เปิดเสียงสวดมนต์/บรรยากาศ';
+            }
+        }
+
+        function startAmbientSound() {
+            // Soothing gong / bowl tone
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(216, audioCtx.currentTime); // Gentle meditative chime
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            ambientOsc = osc;
+        }
+
+        function stopAmbientSound() {
+            if (ambientOsc) {
+                ambientOsc.stop();
+                ambientOsc = null;
+            }
         }
     </script>
 </body>
