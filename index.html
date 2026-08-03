@@ -373,6 +373,11 @@
             </button>
         </div>
 
+        <!-- เพิ่มส่วนนี้เพื่อโหลดไฟล์เพลง -->
+        <audio id="bgmAudio" loop>
+            <source src="bgm.mp3" type="audio/mpeg">
+        </audio>
+
         <button class="btn-reopen" id="reopenBtn" onclick="toggleForm(true)">🪷 ขอพรลอยกระทงเพิ่ม</button>
 
         <!-- 📋 กล่องกรอกข้อมูลลอยอยู่ตรงกลางจอ -->
@@ -588,7 +593,29 @@
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // 🎵 YouTube Background Music Player Controller
+        // 🎵 แก้ไขส่วนควบคุมเสียงให้เล่นไฟล์ bgm.mp3
+        const bgm = document.getElementById('bgmAudio');
+        const soundTxt = document.getElementById('soundTxt');
+
+        function toggleAudio() {
+            if (bgm.paused) {
+                bgm.play().then(() => {
+                    soundTxt.innerText = 'ปิดเพลงบรรยากาศ';
+                }).catch(e => console.log("Autoplay prevented:", e));
+            } else {
+                bgm.pause();
+                soundTxt.innerText = 'เปิดเพลงบรรยากาศ';
+            }
+        }
+
+        // เพิ่มการฟังเหตุการณ์คลิกครั้งแรกเพื่อเริ่มเล่นเสียง (แก้ปัญหา Autoplay Policy)
+        document.body.addEventListener('click', function() {
+            if (bgm.paused) {
+                bgm.play().catch(() => {});
+                soundTxt.innerText = 'ปิดเพลงบรรยากาศ';
+            }
+        }, { once: true });
+
         let ytPlayer = null;
         let isMusicPlaying = false;
 
