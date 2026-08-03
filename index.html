@@ -27,14 +27,14 @@
             color: #ffffff;
         }
 
-        /* 🌌 คืนวันเพ็ญ - Night Sky & River Backdrop */
+        /* 🌌 คืนวันเพ็ญ - Night Sky & River Backdrop using bg.png */
         .festival-container {
             position: relative;
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(to bottom, #020617 0%, #0b1329 40%, #0f172a 70%, #030712 100%);
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.5) 0%, rgba(11, 19, 41, 0.4) 40%, rgba(3, 7, 18, 0.7) 100%), url('bg.png') no-repeat center center / cover;
             overflow: hidden;
         }
 
@@ -71,87 +71,6 @@
             z-index: 1;
             pointer-events: none;
         }
-
-        /* 📜 บอร์ดประวัติผู้โชคดี (History Panel) */
-        .winner-history-panel {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 80;
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(234, 179, 8, 0.4);
-            border-radius: 14px;
-            padding: 12px;
-            width: 230px;
-            max-height: 170px;
-            overflow-y: auto;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        }
-
-        .winner-history-panel::-webkit-scrollbar {
-            width: 4px;
-        }
-        .winner-history-panel::-webkit-scrollbar-thumb {
-            background: rgba(234, 179, 8, 0.5);
-            border-radius: 4px;
-        }
-
-        .winner-history-panel h3 {
-            color: #facc15;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 4px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .history-list {
-            list-style: none;
-            font-size: 11.5px;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0;
-            border-bottom: 1px dashed rgba(255,255,255,0.08);
-        }
-
-        .history-date { color: #94a3b8; font-size: 10px; }
-        .history-name { color: #4ade80; font-weight: 600; text-align: right; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        /* 🏆 Pop-Up ประกาศผู้โชคดี */
-        .winner-popup {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-180%);
-            z-index: 200;
-            background: linear-gradient(135deg, #b45309, #fef08a, #d97706, #fef9c3);
-            border: 2px solid #ffffff;
-            padding: 12px 28px;
-            border-radius: 30px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.7), 0 0 30px rgba(234, 179, 8, 0.6);
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            width: 90%;
-            max-width: 460px;
-        }
-
-        .winner-popup.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .winner-popup h2 { color: #1e1b4b; font-size: 15px; font-weight: 800; }
-        .winner-popup p { color: #7f1d1d; font-size: 19px; font-weight: 800; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
         /* 🌊 โซนแม่น้ำสำหรับลอยกระทง */
         .river {
@@ -444,27 +363,13 @@
         <!-- ☁️ ท้องฟ้าและโคมลอย -->
         <div class="sky-bg" id="skyBg"></div>
 
-        <!-- 📜 บอร์ดประวัติผู้โชคดี -->
-        <div class="winner-history-panel">
-            <h3>🏆 ประวัติผู้โชคดีประจำวัน</h3>
-            <ul class="history-list" id="historyList">
-                <li class="history-item"><span class="history-date">วันนี้ 17:20</span> <span class="history-name">คุณมินต์ บัญชี</span></li>
-            </ul>
-        </div>
-
-        <!-- 🏆 Pop-Up ประกาศผู้โชคดีด้านบนจอกลาง -->
-        <div class="winner-popup" id="winnerAlert">
-            <h2>🎉 ยินดีด้วยกับผู้โชคดีประจำวัน 🎉</h2>
-            <p id="winnerNameDisplay">กำลังสุ่มหาผู้โชคดี...</p>
-        </div>
+        <!-- 🎵 YouTube Hidden Player Container -->
+        <div id="ytplayer" class="absolute pointer-events-none opacity-0 w-1 h-1 overflow-hidden" style="top: -9999px; left: -9999px;"></div>
 
         <!-- 🎵 Controls Top Right -->
         <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
-            <button id="soundBtn" onclick="toggleAudio()" class="bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1.5 transition">
-                <span>🔊</span> <span id="soundTxt">เปิดเสียงสวดมนต์/บรรยากาศ</span>
-            </button>
-            <button onclick="releaseSkyLantern()" class="bg-amber-600/80 hover:bg-amber-500 text-white border border-amber-400/40 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1 transition shadow-lg">
-                <span>🎈</span> ปล่อยโคมลอย
+            <button id="soundBtn" onclick="toggleAudio()" class="bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur flex items-center gap-1.5 transition shadow-lg">
+                <span>🎵</span> <span id="soundTxt">เปิดเพลงบรรยากาศ</span>
             </button>
         </div>
 
@@ -552,9 +457,7 @@
         }
 
         let participantsList = []; 
-        let selectedKrathongStyle = 'Green'; 
         let activeModalKrathongId = null;
-        let localKrathongs = [];
 
         window.setQuickWish = function(text) {
             document.getElementById('empWish').value = text;
@@ -588,7 +491,7 @@
                     const querySnapshot = await getDocs(qCheck);
 
                     if (!querySnapshot.empty) {
-                        showCustomModal('เคยลอยกระทงแล้ว', '❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มารอร่วมลุ้นรางวัลใหญ่ด้วยกันนะคะ!');
+                        showCustomModal('เคยลอยกระทงแล้ว', '❌ รหัสพนักงานนี้เคยใช้ลอยกระทงไปแล้วค่ะ ไม่สามารถลอยซ้ำได้อีก มาร่วมสืบสานประเพณีด้วยกันนะคะ!');
                         return;
                     }
 
@@ -628,7 +531,6 @@
                 toggleForm(false);
             } catch (e) {
                 console.error("Error adding document: ", e);
-                // Fallback rendering on error
                 renderKrathong({
                     id: 'local_' + Date.now(),
                     name: nameInput,
@@ -647,11 +549,6 @@
                 const qKrathong = query(collection(db, "krathongs"), orderBy("timestamp", "asc"));
                 onSnapshot(qKrathong, (snapshot) => {
                     participantsList = [];
-                    snapshot.docs.forEach((docSnap) => {
-                        const data = docSnap.data();
-                        participantsList.push(data.name); 
-                    });
-                    
                     snapshot.docChanges().forEach((change) => {
                         if (change.type === "added") {
                             const data = change.doc.data();
@@ -663,23 +560,6 @@
                     console.log("Firestore snapshot fallback:", error);
                     loadDefaultAccountingKrathongs();
                 });
-
-                const qLucky = query(collection(db, "lucky_winners"), orderBy("drawTime", "desc"));
-                onSnapshot(qLucky, (snapshot) => {
-                    const historyList = document.getElementById('historyList');
-                    historyList.innerHTML = '';
-                    
-                    snapshot.docs.forEach((docSnap) => {
-                        const data = docSnap.data();
-                        const li = document.createElement('li');
-                        li.className = 'history-item';
-                        li.innerHTML = `
-                            <span class="history-date">${data.dateStr || 'วันนี้'}</span>
-                            <span class="history-name">คุณ ${data.winnerName}</span>
-                        `;
-                        historyList.appendChild(li);
-                    });
-                });
             } catch (e) {
                 loadDefaultAccountingKrathongs();
             }
@@ -687,7 +567,6 @@
             loadDefaultAccountingKrathongs();
         }
 
-        // Pre-populate river with initial sample accounting team Krathongs if empty
         function loadDefaultAccountingKrathongs() {
             const defaultKrathongs = [
                 { id: 'def1', name: 'น้องมินต์ บัญชีบริหาร', employeeId: '6501001', wish: 'ขอให้ปิดงบเดือนนี้ราบรื่น ไม่มี Diff แม้แต่สลึงเดียว 🙏', styleType: 'Green', likes: 12 },
@@ -702,62 +581,55 @@
             });
         }
 
-        async function checkLuckyDrawTime() {
-            const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
-            const dateStr = now.toLocaleDateString('th-TH', {day: '2-digit', month: '2-digit', year: 'numeric'});
-
-            // Lucky draw active check (or manually demoable)
-            if ((currentHour === 17 && currentMinute >= 20 && currentMinute < 25) || window.forceLuckyDraw) {
-                let todayWinner = null;
-
-                if (db) {
-                    try {
-                        const luckyRef = collection(db, "lucky_winners");
-                        const snapshot = await getDocs(luckyRef);
-                        
-                        snapshot.forEach(docSnap => {
-                            if(docSnap.data().dateStr === dateStr) {
-                                todayWinner = docSnap.data().winnerName;
-                            }
-                        });
-
-                        if (!todayWinner && participantsList.length > 0) {
-                            const randomIndex = Math.floor(Math.random() * participantsList.length);
-                            const luckyName = participantsList[randomIndex];
-                            
-                            await addDoc(collection(db, "lucky_winners"), {
-                                winnerName: luckyName,
-                                dateStr: dateStr,
-                                drawTime: now.getTime()
-                            });
-                            todayWinner = luckyName;
-                        }
-                    } catch(e) {
-                        if (participantsList.length > 0) todayWinner = participantsList[0];
-                    }
-                } else if (participantsList.length > 0) {
-                    todayWinner = participantsList[Math.floor(Math.random() * participantsList.length)];
-                }
-
-                if (todayWinner) {
-                    document.getElementById('winnerNameDisplay').innerText = `คุณ ${todayWinner} 🏆`;
-                    document.getElementById('winnerAlert').classList.add('show');
-                }
-            } else {
-                document.getElementById('winnerAlert').classList.remove('show');
-            }
-        }
-
-        setInterval(checkLuckyDrawTime, 10000);
-        checkLuckyDrawTime();
-
-        // Attach global functions to window
         window.renderKrathongData = renderKrathong;
     </script>
 
+    <!-- 🎵 YouTube IFrame API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
+        // 🎵 YouTube Background Music Player Controller
+        let ytPlayer = null;
+        let isMusicPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('ytplayer', {
+                height: '1',
+                width: '1',
+                videoId: 'X80o4uXSkOs',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'X80o4uXSkOs',
+                    'playsinline': 1
+                },
+                events: {
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            ytPlayer.playVideo(); // Enforce continuous playback on loop
+                        }
+                    }
+                }
+            });
+        }
+
+        function toggleAudio() {
+            const btnTxt = document.getElementById('soundTxt');
+            if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+
+            const state = ytPlayer.getPlayerState();
+            if (state === YT.PlayerState.PLAYING) {
+                ytPlayer.pauseVideo();
+                isMusicPlaying = false;
+                btnTxt.innerText = 'เปิดเพลงบรรยากาศ';
+            } else {
+                ytPlayer.playVideo();
+                isMusicPlaying = true;
+                btnTxt.innerText = 'ปิดเพลงบรรยากาศ';
+            }
+        }
+
         function toggleForm(show) {
             const form = document.getElementById('inputForm');
             const reopenBtn = document.getElementById('reopenBtn');
@@ -792,7 +664,7 @@
             item.style.setProperty('--flow-speed', speed + 's');
             item.style.setProperty('--wave-move', (Math.random() * 24 - 12) + 'px');
 
-            // Perspective scaling (smaller near top, larger near bottom)
+            // Perspective scaling
             const scaleValue = 0.5 + (randomTop / 140);
             item.style.transform = `scale(${scaleValue})`;
 
@@ -805,7 +677,6 @@
                 <div class="wish-text">${escapeHtml(wish)}</div>
             `;
 
-            // Click listener to inspect Krathong
             item.onclick = function() {
                 openKrathongModal(item);
             };
@@ -833,7 +704,6 @@
             document.getElementById('modalWishText').innerText = wish;
             document.getElementById('likeBtnTxt').innerText = `ส่งกำลังใจ (${likes})`;
 
-            // Set Green.png image inside modal
             document.getElementById('modalKrathongSvg').innerHTML = `<img src="Green.png" alt="กระทงใบตองเขียว" class="w-20 h-20 object-contain drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/100x90/14532d/ffffff?text=Green.png';">`;
             document.getElementById('wishModal').classList.add('active');
         }
@@ -885,9 +755,10 @@
             document.body.appendChild(modal);
         }
 
-        // 🎈 Sky Lanterns generator
+        // 🎈 Automatic background sky lanterns generator
         function releaseSkyLantern() {
             const sky = document.getElementById('skyBg');
+            if (!sky) return;
             const lantern = document.createElement('div');
             lantern.className = 'sky-lantern';
             lantern.style.left = (Math.random() * 90 + 5) + '%';
@@ -898,53 +769,9 @@
             setTimeout(() => lantern.remove(), 22000);
         }
 
-        // Auto release lanterns periodically
+        // Auto release lanterns periodically in background
         setInterval(releaseSkyLantern, 4000);
         for(let i=0; i<5; i++) setTimeout(releaseSkyLantern, i * 800);
-
-        // 🎵 Ambient Thai Sound Synthesizer (Web Audio API - No external audio URLs needed!)
-        let audioCtx = null;
-        let isPlaying = false;
-        let ambientOsc = null;
-
-        function toggleAudio() {
-            const btnTxt = document.getElementById('soundTxt');
-            if (!isPlaying) {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                startAmbientSound();
-                isPlaying = true;
-                btnTxt.innerText = 'ปิดเสียงบรรยากาศ';
-            } else {
-                stopAmbientSound();
-                isPlaying = false;
-                btnTxt.innerText = 'เปิดเสียงสวดมนต์/บรรยากาศ';
-            }
-        }
-
-        function startAmbientSound() {
-            // Soothing gong / bowl tone
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(216, audioCtx.currentTime); // Gentle meditative chime
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            ambientOsc = osc;
-        }
-
-        function stopAmbientSound() {
-            if (ambientOsc) {
-                ambientOsc.stop();
-                ambientOsc = null;
-            }
-        }
     </script>
 </body>
 </html>
